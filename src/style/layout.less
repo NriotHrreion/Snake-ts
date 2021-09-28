@@ -1,0 +1,69 @@
+@import url("./vars.less");
+
+@board-height: 20%;
+@game-height: 100% - @board-height;
+
+body {
+    background-color: #eee;
+}
+
+#root {
+    margin: 20px;
+    padding: 0;
+    .main-container {
+        width: @main-width;
+        height: @main-height;
+        margin: 0 auto;
+        .board-container {
+            width: 100%;
+            height: @board-height;
+            background-color: @theme-color;
+            ul {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                li {
+                    @padding-length: 30px;
+                    text-align: center;
+                    color: #fff;
+                    list-style: none;
+                    float: left;
+                    padding: @padding-length;
+                    padding-bottom: (@padding-length / 2) + 12;
+                    width: ((@main-width) / 2) - (2 * @padding-length);
+                    height: @board-height - (2 * @padding-length);
+                    transition: background-color .1s;
+                    p {
+                        font-weight: bold;
+                    }
+                    &:hover {
+                        background-color: #b1b1b1;
+                    }
+                }
+            }
+        }
+        .game-container {
+            @border-width: 1px;
+            position: relative;
+            height: @game-height;
+            width: 100% - (@border-width / 4);
+            border: @border-width solid @theme-color;
+            border-top: none;
+            background-color: #fff;
+            .snake-body {
+                position: absolute;
+                display: inline-block;
+                background-color: #000;
+                width: @ingame-block-width;
+                height: @ingame-block-height;
+            }
+            .food {
+                position: absolute;
+                display: inline-block;
+                background-color: #ff0000;
+                width: @ingame-block-width;
+                height: @ingame-block-height;
+            }
+        }
+    }
+}
