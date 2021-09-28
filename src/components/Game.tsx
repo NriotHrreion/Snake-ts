@@ -3,7 +3,7 @@ import { Component, ReactElement } from "react";
 import { Dir } from "./Dir";
 import Utils from "../utils";
 
-export default class Game<P, S> extends Component<{}, GameState> {
+export default class Game<P> extends Component<{}, GameState> {
     private snake: Snake;
     public food: Food;
 
@@ -83,7 +83,7 @@ export default class Game<P, S> extends Component<{}, GameState> {
 }
 
 class Snake {
-    private game: Game<{}, {}>;
+    private game: Game<{}>;
 
     private direction: Dir = Dir.RIGHT;
     private length: number;
@@ -92,7 +92,7 @@ class Snake {
     private width: number = 10;
     private height: number = 10;
 
-    public constructor(initialLength: number, game: Game<{}, {}>) {
+    public constructor(initialLength: number, game: Game<{}>) {
         this.game = game;
         this.length = initialLength;
     }
@@ -248,12 +248,12 @@ class Snake {
 
 class Food {
     private position: FoodPosition;
-    private game: Game<{}, {}>
+    private game: Game<{}>
     
     private width: number = 10;
     private height: number = 10;
 
-    public constructor(position: FoodPosition, game: Game<{}, {}>) {
+    public constructor(position: FoodPosition, game: Game<{}>) {
         this.position = position;
         this.game = game;
     }

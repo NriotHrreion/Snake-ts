@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 // Import Modules
 import { Component, ReactElement } from "react";
 // Layout Style
@@ -6,7 +7,7 @@ import "style/layout.less";
 import Board from "components/Board";
 import Game from "components/Game";
 
-export default class SnakeGame<P, S> extends Component<{}, MainState> {
+export default class SnakeGame<P> extends Component<{}, MainState> {
     public constructor(props: P) {
         super(props);
 

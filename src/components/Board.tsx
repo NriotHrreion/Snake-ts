@@ -1,6 +1,7 @@
+/* eslint-disable eqeqeq */
 import { Component, ReactElement } from "react";
 
-export default class Board<P, S> extends Component<{}, BoardState> {
+export default class Board<P> extends Component<{}, BoardState> {
     private timer: Timer;
     public isGameStart: boolean = false;
 
@@ -46,13 +47,13 @@ export default class Board<P, S> extends Component<{}, BoardState> {
 }
 
 class Timer {
-    private component: Board<{}, {}>;
+    private component: Board<{}>;
     private interval: any = null;
 
     private minute: number = 0;
     private second: number = 0;
 
-    public constructor(component: Board<{}, {}>) {
+    public constructor(component: Board<{}>) {
         this.component = component;
     }
 
