@@ -3,21 +3,27 @@
 @board-height: 20%;
 @game-height: 100% - @board-height;
 
-body {
-    background-color: #eee;
-}
-
 #root {
     margin: 20px;
     padding: 0;
+    * {
+        font-family: @font;
+    }
     .main-container {
         width: @main-width;
         height: @main-height;
         margin: 0 auto;
+        & > p {
+            color: #2C3E50;
+            font-weight: bold;
+            font-size: 12pt;
+        }
         .board-container {
             width: 100%;
             height: @board-height;
             background-color: @theme-color;
+            border-top-left-radius: @main-border-radius;
+            border-top-right-radius: @main-border-radius;
             ul {
                 width: 100%;
                 height: 100%;
@@ -37,7 +43,7 @@ body {
                         font-weight: bold;
                     }
                     &:hover {
-                        background-color: #b1b1b1;
+                        background-color: #345474;
                     }
                 }
             }
@@ -49,6 +55,8 @@ body {
             width: 100% - (@border-width / 4);
             border: @border-width solid @theme-color;
             border-top: none;
+            border-bottom-left-radius: @main-border-radius;
+            border-bottom-right-radius: @main-border-radius;
             background-color: #fff;
             * {
                 position: absolute;
@@ -57,7 +65,7 @@ body {
                 height: @ingame-block-height;
             }
             .snake-body {
-                background-color: #000;
+                background-color: #0f1a25;
             }
             .food {
                 background-color: #ff0000;

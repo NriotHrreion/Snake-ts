@@ -191,35 +191,19 @@ class Snake {
         switch(this.direction) {
             case Dir.UP:
                 this.body[i].y--;
-                if(this.body[i].y < 0) {
-                    this.body[i].y++;
-                    this.game.stop();
-                    return;
-                }
+                if(this.body[i].y < 0) this.body[i].y = 49;
                 break;
             case Dir.DOWN:
                 this.body[i].y++;
-                if(this.body[i].y > 49) {
-                    this.body[i].y--;
-                    this.game.stop();
-                    return;
-                }
+                if(this.body[i].y > 49) this.body[i].y = 0;
                 break;
             case Dir.LEFT:
                 this.body[i].x--;
-                if(this.body[i].x < 0) {
-                    this.body[i].x++;
-                    this.game.stop();
-                    return;
-                }
+                if(this.body[i].x < 0) this.body[i].x = 79;
                 break;
             case Dir.RIGHT:
                 this.body[i].x++;
-                if(this.body[i].x > 79) {
-                    this.body[i].x--;
-                    this.game.stop();
-                    return;
-                }
+                if(this.body[i].x > 79) this.body[i].x = 0;
                 break;
         }
 
