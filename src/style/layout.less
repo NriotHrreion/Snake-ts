@@ -50,19 +50,20 @@ body {
             border: @border-width solid @theme-color;
             border-top: none;
             background-color: #fff;
-            .snake-body {
+            * {
                 position: absolute;
                 display: inline-block;
-                background-color: #000;
                 width: @ingame-block-width;
                 height: @ingame-block-height;
             }
+            .snake-body {
+                background-color: #000;
+            }
             .food {
-                position: absolute;
-                display: inline-block;
                 background-color: #ff0000;
-                width: @ingame-block-width;
-                height: @ingame-block-height;
+            }
+            .bomb {
+                background-color: #a81212;
             }
         }
     }

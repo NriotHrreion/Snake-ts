@@ -6,6 +6,7 @@ import Utils from "../utils";
 export default class Game<P> extends Component<{}, GameState> {
     private snake: Snake;
     public food: Food;
+    public bomb: Bomb | null;
 
     public isGameStart: boolean = false;
     public score: number = 0;
@@ -21,6 +22,7 @@ export default class Game<P> extends Component<{}, GameState> {
             x: Utils.getRandom(0, 79),
             y: Utils.getRandom(0, 49)
         }, this);
+        this.bomb = null;
     }
 
     private start(): void {
@@ -58,22 +60,22 @@ export default class Game<P> extends Component<{}, GameState> {
                     }
                     break;
                 case "ArrowUp":
-                    if(this.snake.getDirection() == Dir.DOWN) return;
+                    if(this.snake.getDirection() == Dir.DOWN || !this.isGameStart) return;
                     this.snake.setDirection(Dir.UP);
                     // this.snake.move();
                     break;
                 case "ArrowDown":
-                    if(this.snake.getDirection() == Dir.UP) return;
+                    if(this.snake.getDirection() == Dir.UP || !this.isGameStart) return;
                     this.snake.setDirection(Dir.DOWN);
                     // this.snake.move();
                     break;
                 case "ArrowLeft":
-                    if(this.snake.getDirection() == Dir.RIGHT) return;
+                    if(this.snake.getDirection() == Dir.RIGHT || !this.isGameStart) return;
                     this.snake.setDirection(Dir.LEFT);
                     // this.snake.move();
                     break;
                 case "ArrowRight":
-                    if(this.snake.getDirection() == Dir.LEFT) return;
+                    if(this.snake.getDirection() == Dir.LEFT || !this.isGameStart) return;
                     this.snake.setDirection(Dir.RIGHT);
                     // this.snake.move();
                     break;
@@ -241,7 +243,33 @@ class Snake {
             }, this.game);
             this.game.food.display();
 
+            // do spawn bomb
+            var choose = Utils.getRandom(0, 1); // 0 no, 1 yes
+            if(choose == 1) {
+                this.game.bomb = new Bomb({
+                    x: Utils.getRandom(0, 79),
+                    y: Utils.getRandom(0, 49)
+                }, this.game);
+                this.game.bomb.display();
+
+                // setTimeout(() => {
+                //     if(!this.game.bomb) return
+                //     this.game.bomb.boom();
+                //     this.game.bomb = null;
+                // }, 10000);
+            }
+
             this.addLength();
+        }
+
+        // check whether it ate the bomb
+        if(
+            this.game.bomb &&
+            this.body[this.body.length - 1].x == this.game.bomb.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.bomb.getPosition().y
+        ) {
+            this.game.bomb.boom();
+            this.game.bomb = null;
         }
     }
 }
@@ -269,7 +297,11 @@ class Food {
         if(!gameContainer) return;
 
         gameContainer.removeChild(gameContainer.getElementsByClassName("food")[0]);
-        
+        if(this.game.bomb != null) {
+            this.game.bomb.remove();
+            this.game.bomb = null;
+        }
+
         var getScoreEvent = new CustomEvent("getScore", {detail: {
             score: this.game.score
         }});
@@ -285,6 +317,57 @@ class Food {
         foodElem.style.left = this.width * this.position.x +"px";
         foodElem.style.top = this.height * this.position.y +"px";
         gameContainer.appendChild(foodElem);
+    }
+}
+
+class Bomb {
+    private position: FoodPosition;
+    private game: Game<{}>
+    
+    private width: number = 10;
+    private height: number = 10;
+
+    public constructor(position: FoodPosition, game: Game<{}>) {
+        this.position = position;
+        this.game = game;
+    }
+
+    public getPosition(): FoodPosition {
+        return this.position;
+    }
+
+    public boom(): void {
+        if(this.game.score - 5 < 0) {
+            this.remove();
+            this.game.stop();
+            return;
+        }
+        this.game.score -= 5;
+
+        this.remove();
+        
+        var getScoreEvent = new CustomEvent("getScore", {detail: {
+            score: this.game.score
+        }});
+        document.body.dispatchEvent(getScoreEvent);
+    }
+
+    public remove(): void {
+        var gameContainer = document.getElementById("game");
+        if(!gameContainer) return;
+
+        gameContainer.removeChild(gameContainer.getElementsByClassName("bomb")[0]);
+    }
+
+    public display(): void {
+        var gameContainer = document.getElementById("game");
+        if(!gameContainer) return;
+
+        var bombElem = document.createElement("div");
+        bombElem.className = "bomb";
+        bombElem.style.left = this.width * this.position.x +"px";
+        bombElem.style.top = this.height * this.position.y +"px";
+        gameContainer.appendChild(bombElem);
     }
 }
 
