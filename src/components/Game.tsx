@@ -8,6 +8,7 @@ export default class Game<P> extends Component<{}, GameState> {
     public food: Food;
     public bomb: Bomb | null;
 
+    public throughWall: boolean = true;
     public isGameStart: boolean = false;
     public score: number = 0;
 
@@ -51,6 +52,9 @@ export default class Game<P> extends Component<{}, GameState> {
         this.snake.init();
         this.food.display();
 
+        var throughWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).throughWall;
+        this.throughWall = throughWall;
+
         document.body.addEventListener("keydown", (e) => {
             switch(e.key) {
                 case " ": // game start
@@ -79,6 +83,11 @@ export default class Game<P> extends Component<{}, GameState> {
                     this.snake.setDirection(Dir.RIGHT);
                     // this.snake.move();
                     break;
+            }
+        });
+        document.body.addEventListener("settingsChange", (e: CustomEvent) => {
+            if(e.detail.type == "throughWall") {
+                this.throughWall = e.detail.enabled;
             }
         });
     }
@@ -191,19 +200,51 @@ class Snake {
         switch(this.direction) {
             case Dir.UP:
                 this.body[i].y--;
-                if(this.body[i].y < 0) this.body[i].y = 49;
+                if(this.body[i].y < 0) {
+                    if(this.game.throughWall) {
+                        this.body[i].y = 49;
+                    } else {
+                        this.body[i].y++;
+                        this.game.stop();
+                        return;
+                    }
+                }
                 break;
             case Dir.DOWN:
                 this.body[i].y++;
-                if(this.body[i].y > 49) this.body[i].y = 0;
+                if(this.body[i].y > 49) {
+                    if(this.game.throughWall) {
+                        this.body[i].y = 0;
+                    } else {
+                        this.body[i].y--;
+                        this.game.stop();
+                        return;
+                    }
+                }
                 break;
             case Dir.LEFT:
                 this.body[i].x--;
-                if(this.body[i].x < 0) this.body[i].x = 79;
+                if(this.body[i].x < 0) {
+                    if(this.game.throughWall) {
+                        this.body[i].x = 79;
+                    } else {
+                        this.body[i].x++;
+                        this.game.stop();
+                        return;
+                    }
+                }
                 break;
             case Dir.RIGHT:
                 this.body[i].x++;
-                if(this.body[i].x > 79) this.body[i].x = 0;
+                if(this.body[i].x > 79) {
+                    if(this.game.throughWall) {
+                        this.body[i].x = 0;
+                    } else {
+                        this.body[i].x--;
+                        this.game.stop();
+                        return;
+                    }
+                }
                 break;
         }
 
@@ -235,12 +276,6 @@ class Snake {
                     y: Utils.getRandom(0, 49)
                 }, this.game);
                 this.game.bomb.display();
-
-                // setTimeout(() => {
-                //     if(!this.game.bomb) return
-                //     this.game.bomb.boom();
-                //     this.game.bomb = null;
-                // }, 10000);
             }
 
             this.addLength();

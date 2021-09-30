@@ -13,10 +13,18 @@
         width: @main-width;
         height: @main-height;
         margin: 0 auto;
-        & > p {
+        .tip-message {
             color: #2C3E50;
             font-weight: bold;
             font-size: 12pt;
+            display: inline-block;
+        }
+        .page-button {
+            float: right;
+            margin-left: 10px;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            outline: none;
         }
         .board-container {
             width: 100%;
@@ -65,13 +73,38 @@
                 height: @ingame-block-height;
             }
             .snake-body {
-                background-color: #0f1a25;
+                background-color: #0468d7;
             }
             .food {
                 background-color: #ff0000;
             }
             .bomb {
                 background-color: #a81212;
+            }
+        }
+        .dialog-page {
+            background-color: #e7e7e7;
+            width: 0;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width .3s;
+            overflow: hidden;
+            color: #2C3E50;
+            & > * {
+                min-width: 300px;
+                margin-left: 20px;
+                a {
+                    color: #0468d7;
+                    text-decoration: none;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            .switcher {
+                width: 70px;
             }
         }
     }

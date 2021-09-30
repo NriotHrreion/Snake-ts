@@ -4,6 +4,8 @@ By NriotHrreion; Using [React.js](https://reactjs.org)
 
 ## 使用方法
 
+在线游玩: [戳我](https://snake-ts-8258bf.netlify.app)
+
 1. 下载这个项目
 
 ```
