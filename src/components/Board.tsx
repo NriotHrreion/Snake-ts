@@ -43,6 +43,10 @@ export default class Board<P> extends Component<{}, BoardState> {
                 score: e.detail.score
             });
         });
+        document.body.addEventListener("gameReset", () => {
+            this.isGameStart = false;
+            this.timer.reset();
+        });
     }
 }
 
@@ -76,6 +80,16 @@ class Timer {
 
     public stop(): void {
         clearInterval(this.interval);
+    }
+
+    public reset(): void {
+        this.stop();
+        this.minute = this.second = 0;
+        this.component.setState({
+            minute: "00",
+            second: "00",
+            score: 0
+        });
     }
 }
 

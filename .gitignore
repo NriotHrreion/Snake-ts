@@ -1,9 +1,11 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+
+# npm package-lock
+# This file will be generated automatically by doing "npm install"
+package-lock.json
 
 # testing
 /coverage

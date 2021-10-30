@@ -10,6 +10,8 @@ import Game from "components/Game";
 import Settings from "pages/Settings";
 import About from "pages/About";
 
+const tipMessage = "Press 'space' to start the game!";
+
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isSettingsOpen: boolean = false;
     private isAboutOpen: boolean = false;
@@ -21,8 +23,17 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         super(props);
 
         this.state = {
-            tipMessage: "Press 'space' to start the game!"
+            tipMessage: tipMessage
         };
+    }
+
+    private resetHandle(): void {
+        var gameResetEvent = new CustomEvent("gameReset");
+        document.body.dispatchEvent(gameResetEvent);
+
+        this.setState({
+            tipMessage: tipMessage
+        });
     }
 
     private settingsHandle(): void {
@@ -61,8 +72,9 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                 <About/>
 
                 <p className="tip-message">{this.state.tipMessage}</p>
-                <button className="page-button" onClick={() => this.aboutHandle()}>About</button>
-                <button className="page-button" onClick={() => this.settingsHandle()}>Settings</button>
+                <button className="bottom-button" onClick={() => this.aboutHandle()}>About</button>
+                <button className="bottom-button" onClick={() => this.settingsHandle()}>Settings</button>
+                <button className="bottom-button" onClick={() => this.resetHandle()}>Reset</button>
             </div>
         );
     }
