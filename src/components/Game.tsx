@@ -7,12 +7,17 @@ export default class Game<P> extends Component<{}, GameState> {
     private snake: Snake;
     public food: Food;
     public bomb: Bomb | null;
+    public candy: Candy | null;
+    public snickers: Snickers | null;
 
     public throughWall: boolean = true;
     public isGameStart: boolean = false;
+    public doIgnoreBomb: boolean = false;
     public score: number = 0;
+    public speed: number = 150;
 
-    private timerMove: any;
+    public timerMove: any;
+    private maxSpeed: number = 300;
     
     public constructor(props: P) {
         super(props);
@@ -24,6 +29,8 @@ export default class Game<P> extends Component<{}, GameState> {
             y: Utils.getRandom(0, 49)
         }, this);
         this.bomb = null;
+        this.candy = null;
+        this.snickers = null;
     }
 
     private start(): void {
@@ -31,7 +38,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
         this.timerMove = setInterval(() => {
             this.snake.move();
-        }, 150);
+        }, this.maxSpeed - this.speed);
     }
 
     public stop(): void {
@@ -40,6 +47,16 @@ export default class Game<P> extends Component<{}, GameState> {
 
         var gameStopEvent = new CustomEvent("gameStop");
         document.body.dispatchEvent(gameStopEvent);
+    }
+
+    public setSpeed(speed: number): void {
+        if(speed >= this.maxSpeed) return;
+        this.speed = speed;
+
+        clearInterval(this.timerMove);
+        this.timerMove = setInterval(() => {
+            this.snake.move();
+        }, this.maxSpeed - this.speed);
     }
 
     public render(): ReactElement {
@@ -286,13 +303,21 @@ class Snake {
             this.game.food.display();
 
             // do spawn bomb
-            var choose = Utils.getRandom(0, 1); // 0 no, 1 yes
-            if(choose == 1) {
+            if(Utils.getRandom(0, 1) == 0) {
                 this.game.bomb = new Bomb({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game);
                 this.game.bomb.display();
+            }
+
+            // do spawn candy (33%)
+            if(Utils.getRandom(0, 2) == 0) {
+                this.game.candy = new Candy({
+                    x: Utils.getRandom(0, 79),
+                    y: Utils.getRandom(0, 49)
+                }, this.game);
+                this.game.candy.display();
             }
 
             this.addLength();
@@ -302,24 +327,36 @@ class Snake {
         if(
             this.game.bomb &&
             this.body[this.body.length - 1].x == this.game.bomb.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.bomb.getPosition().y
+            this.body[this.body.length - 1].y == this.game.bomb.getPosition().y &&
+            !this.game.doIgnoreBomb
         ) {
             this.game.bomb.boom();
             this.game.bomb = null;
         }
+
+        if(
+            this.game.candy &&
+            this.body[this.body.length - 1].x == this.game.candy.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.candy.getPosition().y
+        ) {
+            this.game.candy.eat();
+            this.game.candy = null;
+        }
     }
 }
 
-class Food {
-    private position: FoodPosition;
-    private game: Game<{}>
+class Item {
+    public position: FoodPosition;
+    public game: Game<{}>;
+    public className: string;
     
-    private width: number = 10;
-    private height: number = 10;
+    public width: number = 10;
+    public height: number = 10;
 
-    public constructor(position: FoodPosition, game: Game<{}>) {
+    public constructor(position: FoodPosition, game: Game<{}>, className: string) {
         this.position = position;
         this.game = game;
+        this.className = className;
     }
 
     public getPosition(): FoodPosition {
@@ -327,12 +364,41 @@ class Food {
     }
 
     public eat(): void {
-        this.game.score++;
+        this.remove();
+    }
 
+    public remove(): void {
         var gameContainer = document.getElementById("game");
         if(!gameContainer) return;
 
-        gameContainer.removeChild(gameContainer.getElementsByClassName("food")[0]);
+        gameContainer.removeChild(gameContainer.getElementsByClassName(this.className)[0]);
+    }
+
+    public display(): void {
+        var gameContainer = document.getElementById("game");
+        if(!gameContainer) return;
+
+        var bombElem = document.createElement("div");
+        bombElem.className = this.className;
+        bombElem.style.left = this.width * this.position.x +"px";
+        bombElem.style.top = this.height * this.position.y +"px";
+        gameContainer.appendChild(bombElem);
+    }
+}
+
+/**
+ * When the snake eat it, the snake will got 1 score.
+ */
+class Food extends Item {
+    public constructor(position: FoodPosition, game: Game<{}>) {
+        super(position, game, "food");
+    }
+
+    public eat(): void {
+        super.eat();
+
+        this.game.score++;
+
         if(this.game.bomb != null) {
             this.game.bomb.remove();
             this.game.bomb = null;
@@ -343,67 +409,71 @@ class Food {
         }});
         document.body.dispatchEvent(getScoreEvent);
     }
-
-    public display(): void {
-        var gameContainer = document.getElementById("game");
-        if(!gameContainer) return;
-
-        var foodElem = document.createElement("div");
-        foodElem.className = "food";
-        foodElem.style.left = this.width * this.position.x +"px";
-        foodElem.style.top = this.height * this.position.y +"px";
-        gameContainer.appendChild(foodElem);
-    }
 }
 
-class Bomb {
-    private position: FoodPosition;
-    private game: Game<{}>
-    
-    private width: number = 10;
-    private height: number = 10;
-
+/**
+ * When the snake eat it, the snake will lose 5 scores.
+ */
+class Bomb extends Item {
     public constructor(position: FoodPosition, game: Game<{}>) {
-        this.position = position;
-        this.game = game;
-    }
-
-    public getPosition(): FoodPosition {
-        return this.position;
+        super(position, game, "bomb");
     }
 
     public boom(): void {
+        super.eat();
+
         if(this.game.score - 5 < 0) {
-            this.remove();
             this.game.stop();
             return;
         }
         this.game.score -= 5;
-
-        this.remove();
         
         var getScoreEvent = new CustomEvent("getScore", {detail: {
             score: this.game.score
         }});
         document.body.dispatchEvent(getScoreEvent);
     }
+}
 
-    public remove(): void {
-        var gameContainer = document.getElementById("game");
-        if(!gameContainer) return;
-
-        gameContainer.removeChild(gameContainer.getElementsByClassName("bomb")[0]);
+/**
+ * When the snake eat it, the snake can move faster for 5 seconds.
+ */
+class Candy extends Item {
+    public constructor(position: FoodPosition, game: Game<{}>) {
+        super(position, game, "candy");
     }
 
-    public display(): void {
-        var gameContainer = document.getElementById("game");
-        if(!gameContainer) return;
+    public eat(): void {
+        super.eat();
 
-        var bombElem = document.createElement("div");
-        bombElem.className = "bomb";
-        bombElem.style.left = this.width * this.position.x +"px";
-        bombElem.style.top = this.height * this.position.y +"px";
-        gameContainer.appendChild(bombElem);
+        // add speed
+        this.game.setSpeed(this.game.speed + 30);
+        // set the speed to 150 after 5 seconds (5000ms)
+        setTimeout(() => {
+            this.game.setSpeed(150);
+        }, 5000);
+    }
+}
+
+/**
+ * When the snake eat it, the snake will be able to ignore the bomb for 10 seconds.
+ * 
+ * @todo
+ */
+class Snickers extends Item {
+    public constructor(position: FoodPosition, game: Game<{}>) {
+        super(position, game, "snickers");
+    }
+
+    public eat(): void {
+        super.eat();
+
+        // ignore bomb
+        this.game.doIgnoreBomb = true;
+        // set it to the normal value after 10 seconds (10000ms)
+        setTimeout(() => {
+            this.game.doIgnoreBomb = false;
+        }, 10000);
     }
 }
 

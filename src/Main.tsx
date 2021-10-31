@@ -27,6 +27,10 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         };
     }
 
+    /**
+     * The following ...Handle() methods are the listener of the bottom buttons.
+     */
+
     private resetHandle(): void {
         var gameResetEvent = new CustomEvent("gameReset");
         document.body.dispatchEvent(gameResetEvent);
@@ -80,11 +84,13 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
     }
 
     public componentDidMount(): void {
-        // colorful skin player
+        // Colorful skin player
         var colorfulSkin = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).colorfulSkin;
         if(colorfulSkin) {
+            // Do a loop for animating the colorful skin.
             var h = 359
             this.colorfulSkinTimer = setInterval(() => {
+                // Set the current color of the skin.
                 Utils.setBgOfAllClasses("snake-body", this.currentSkin);
                 
                 h--;
