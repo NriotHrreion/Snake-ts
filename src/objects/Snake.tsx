@@ -4,7 +4,7 @@ import Game from "../components/Game";
 import Food from "./Food";
 import Bomb from "./Bomb";
 import Candy from "./Candy";
-import Snickers from "./Snickers";
+// import Snickers from "./Snickers";
 import Utils from "../utils";
 
 export default class Snake {
