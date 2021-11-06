@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable eqeqeq */
 export default class Utils {
     public static getRandom(min: number, max: number): number {

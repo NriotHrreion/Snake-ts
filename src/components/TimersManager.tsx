@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import Utils from "../utils";
 
 export default class TimersManager {
