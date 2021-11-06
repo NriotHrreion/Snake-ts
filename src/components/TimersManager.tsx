@@ -3,6 +3,11 @@ import Utils from "../utils";
 
 export default class TimersManager {
     private timers: Timer[] = [];
+    private window: Window;
+
+    public constructor(window: Window) {
+        this.window = window;
+    }
     
     public register(timer: Timer): void {
         this.timers.push(timer);
@@ -19,8 +24,8 @@ export default class TimersManager {
     }
 
     private clear(timer: Timer): void {
-        if(timer.type == "interval") clearInterval(timer.timer);
-        if(timer.type == "timeout") clearTimeout(timer.timer);
+        if(timer.type == "interval") this.window.clearInterval(timer.timer);
+        if(timer.type == "timeout") this.window.clearTimeout(timer.timer);
         this.timers = Utils.arrayItemDelete(this.timers, timer);
     }
 }

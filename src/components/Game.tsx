@@ -26,7 +26,7 @@ export default class Game<P> extends Component<{}, GameState> {
     public score: number = 0;
     public speed: number = 150;
 
-    private timersManager: TimersManager = new TimersManager();
+    private timersManager: TimersManager = new TimersManager(window);
 
     public timerMove: any;
     private maxSpeed: number = 300;
@@ -137,6 +137,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
             clearInterval(this.timerMove);
             this.timersManager.removeAll();
+            this.timersManager = new TimersManager(window);
             this.timerMove = null;
         });
         document.body.addEventListener("snakeRunning", (e: CustomEvent) => {
@@ -164,6 +165,8 @@ export default class Game<P> extends Component<{}, GameState> {
                     });
                     this.setSpeed(150);
                     this.timersManager.remove("runningAbility");
+
+                    timeLeft = 10;
                 }
             }, 1000);
             this.timersManager.register({name: "runningAbility", timer: timer, type: "interval"});

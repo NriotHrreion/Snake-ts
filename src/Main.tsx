@@ -14,6 +14,7 @@ export const tipMessage = "Press 'space' to start the game!";
 export const tipMessageRunning = "Fast Running is available! Press 'shift' to use.";
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
+    private isGameStart: boolean = false;
     private isSettingsOpen: boolean = false;
     private isAboutOpen: boolean = false;
     private colorfulSkinTimer: any;
@@ -35,6 +36,8 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
     private resetHandle(): void {
         var gameResetEvent = new CustomEvent("gameReset");
         document.body.dispatchEvent(gameResetEvent);
+
+        this.isGameStart = false;
 
         this.setState({
             tipMessage: tipMessage
@@ -104,6 +107,12 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
             switch(e.key) {
                 case " ": // Game Start
                     e.preventDefault();
+                    if(!this.isGameStart) {
+                        this.isGameStart = true;
+                    } else {
+                        return;
+                    }
+
                     this.setState({
                         tipMessage: tipMessageRunning
                     });
