@@ -10,7 +10,8 @@ import Game from "components/Game";
 import Settings from "pages/Settings";
 import About from "pages/About";
 
-const tipMessage = "Press 'space' to start the game!";
+export const tipMessage = "Press 'space' to start the game!";
+export const tipMessageRunning = "Fast Running is available! Press 'shift' to use.";
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isSettingsOpen: boolean = false;
@@ -100,11 +101,23 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         }
 
         document.body.addEventListener("keydown", (e) => {
-            if(e.key == " ") { // game start
-                e.preventDefault();
-                this.setState({
-                    tipMessage: ""
-                });
+            switch(e.key) {
+                case " ": // Game Start
+                    e.preventDefault();
+                    this.setState({
+                        tipMessage: tipMessageRunning
+                    });
+                    break;
+                case "Shift": // Fast Running
+                    e.preventDefault();    
+
+                    var gameResetEvent = new CustomEvent("snakeRunning", {
+                        detail: {
+                            main: this // Main Class for Game Class
+                        }
+                    });
+                    document.body.dispatchEvent(gameResetEvent);
+                    break;
             }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {

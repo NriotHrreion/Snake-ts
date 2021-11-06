@@ -4,7 +4,7 @@ import Game from "../components/Game";
 import Food from "./Food";
 import Bomb from "./Bomb";
 import Candy from "./Candy";
-// import Snickers from "./Snickers";
+import Snickers from "./Snickers";
 import Utils from "../utils";
 
 export default class Snake {
@@ -177,13 +177,14 @@ export default class Snake {
         ) {
             this.game.food.eat();
 
+            // do spawn food (100%)
             this.game.food = new Food({
                 x: Utils.getRandom(0, 79),
                 y: Utils.getRandom(0, 49)
             }, this.game);
             this.game.food.display();
 
-            // do spawn bomb
+            // do spawn bomb (50%)
             if(Utils.getRandom(0, 1) == 0) {
                 this.game.bomb = new Bomb({
                     x: Utils.getRandom(0, 79),
@@ -201,6 +202,15 @@ export default class Snake {
                 this.game.candy.display();
             }
 
+            // do spawn snickers (20%)
+            if(Utils.getRandom(0, 4) == 0) {
+                this.game.snickers = new Snickers({
+                    x: Utils.getRandom(0, 79),
+                    y: Utils.getRandom(0, 49)
+                }, this.game);
+                this.game.snickers.display();
+            }
+
             this.addLength();
         }
 
@@ -215,6 +225,7 @@ export default class Snake {
             this.game.bomb = null;
         }
 
+        // check whether it ate a candy
         if(
             this.game.candy &&
             this.body[this.body.length - 1].x == this.game.candy.getPosition().x &&
@@ -222,6 +233,16 @@ export default class Snake {
         ) {
             this.game.candy.eat();
             this.game.candy = null;
+        }
+
+        // check whether it ate the snickers
+        if(
+            this.game.snickers &&
+            this.body[this.body.length - 1].x == this.game.snickers.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.snickers.getPosition().y
+        ) {
+            this.game.snickers.eat();
+            this.game.snickers = null;
         }
     }
 }

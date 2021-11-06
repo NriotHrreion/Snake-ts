@@ -1,6 +1,9 @@
 /* eslint-disable eqeqeq */
 import { Component, ReactElement } from "react";
 import { Dir } from "./Dir";
+import SnakeGame from "../Main";
+import { tipMessageRunning } from "../Main";
+import TimersManager from "./TimersManager";
 import Snake from "../objects/Snake";
 import Food from "../objects/Food";
 import Bomb from "../objects/Bomb";
@@ -17,9 +20,13 @@ export default class Game<P> extends Component<{}, GameState> {
 
     public throughWall: boolean = true;
     public isGameStart: boolean = false;
+    public isRunning: boolean = false;
+    public isAbleToRun: boolean = true;
     public doIgnoreBomb: boolean = false;
     public score: number = 0;
     public speed: number = 150;
+
+    private timersManager: TimersManager = new TimersManager();
 
     public timerMove: any;
     private maxSpeed: number = 300;
@@ -77,9 +84,10 @@ export default class Game<P> extends Component<{}, GameState> {
         var throughWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).throughWall;
         this.throughWall = throughWall;
 
-        document.body.addEventListener("keydown", (e) => {
+        document.body.addEventListener("keydown", (e: KeyboardEvent) => {
+            console.log(e.key);
             switch(e.key) {
-                case " ": // game start
+                case " ": // Game Start
                     if(!this.isGameStart) {
                         e.preventDefault();
                         this.start();
@@ -124,13 +132,53 @@ export default class Game<P> extends Component<{}, GameState> {
 
             this.score = 0;
             this.isGameStart = false;
+            this.isRunning = false;
+            this.isAbleToRun = true;
 
             clearInterval(this.timerMove);
+            this.timersManager.removeAll();
             this.timerMove = null;
+        });
+        document.body.addEventListener("snakeRunning", (e: CustomEvent) => {
+            var mainClass: SnakeGame<{}> = e.detail.main;
+            if(this.isRunning || !this.isAbleToRun) return;
+            this.isRunning = true;
+            this.isAbleToRun = false;
+
+            this.setSpeed(this.speed + 35);
+
+            var timeLeft = 10; // seconds
+            mainClass.setState({
+                tipMessage: "You're running. (Time Left: "+ timeLeft +"s)"
+            });
+            var timer = setInterval(() => {
+                timeLeft--;
+                mainClass.setState({
+                    tipMessage: "You're running. (Time Left: "+ timeLeft +"s)"
+                });
+
+                if(timeLeft == 0) {
+                    this.isRunning = false;
+                    mainClass.setState({
+                        tipMessage: ""
+                    });
+                    this.setSpeed(150);
+                    this.timersManager.remove("runningAbility");
+                }
+            }, 1000);
+            this.timersManager.register({name: "runningAbility", timer: timer, type: "interval"});
+
+            var cdTimer = setTimeout(() => {
+                this.isAbleToRun = true;
+                mainClass.setState({
+                    tipMessage: tipMessageRunning
+                });
+            }, 30 * 1000);
+            this.timersManager.register({name: "runningCooldown", timer: cdTimer, type: "timeout"});
         });
     }
 }
 
 interface GameState {
-
+    
 }

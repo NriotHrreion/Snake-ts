@@ -20,6 +20,16 @@ export default class Food extends Item {
             this.game.bomb = null;
         }
 
+        if(this.game.candy != null) {
+            this.game.candy.remove();
+            this.game.candy = null;
+        }
+
+        if(this.game.snickers != null) {
+            this.game.snickers.remove();
+            this.game.snickers = null;
+        }
+
         var getScoreEvent = new CustomEvent("getScore", {detail: {
             score: this.game.score
         }});

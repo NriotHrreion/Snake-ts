@@ -20,6 +20,6 @@ export default class Snickers extends Item {
         // set it to the normal value after 10 seconds (10000ms)
         setTimeout(() => {
             this.game.doIgnoreBomb = false;
-        }, 10000);
+        }, 10 * 1000);
     }
 }
