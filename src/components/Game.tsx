@@ -141,11 +141,11 @@ export default class Game<P> extends Component<{}, GameState> {
         });
         document.body.addEventListener("snakeRunning", (e: CustomEvent) => {
             var mainClass: SnakeGame<{}> = e.detail.main;
-            if(this.isRunning || !this.isAbleToRun) return;
+            if(!this.isGameStart || this.isRunning || !this.isAbleToRun) return;
             this.isRunning = true;
             this.isAbleToRun = false;
 
-            this.setSpeed(this.speed + 35);
+            this.setSpeed(185);
 
             var timeLeft = 10; // seconds
             mainClass.setState({

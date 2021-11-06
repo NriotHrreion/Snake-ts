@@ -14,7 +14,7 @@ export default class Candy extends Item {
         super.eat();
 
         // add speed
-        this.game.setSpeed(this.game.speed + 45);
+        this.game.setSpeed(195);
         // set the speed to 150 after 5 seconds (5000ms)
         setTimeout(() => {
             this.game.setSpeed(150);
