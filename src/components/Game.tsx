@@ -85,7 +85,6 @@ export default class Game<P> extends Component<{}, GameState> {
         this.throughWall = throughWall;
 
         document.body.addEventListener("keydown", (e: KeyboardEvent) => {
-            console.log(e.key);
             switch(e.key) {
                 case " ": // Game Start
                     if(!this.isGameStart) {
