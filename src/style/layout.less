@@ -21,10 +21,22 @@
         }
         .bottom-button {
             float: right;
+            cursor: pointer;
             margin-left: 10px;
             margin-block-start: 1em;
             margin-block-end: 1em;
+            padding-bottom: 3px;
             outline: none;
+            border: 0;
+            border-radius: 2px;
+            background-color: @theme-color-light-1;
+            color: #fff;
+            &:hover {
+                background-color: @theme-color-light-2;
+            }
+            &:active {
+                background-color: @theme-color-light-3;
+            }
         }
         .board-container {
             width: 100%;
@@ -92,6 +104,10 @@
                     &:hover {
                         text-decoration: underline;
                     }
+                }
+                code {
+                    font-family: Consolas;
+                    font-size: 10pt;
                 }
             }
             .switcher {

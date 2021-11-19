@@ -92,18 +92,22 @@ export default class Game<P> extends Component<{}, GameState> {
                         this.start();
                     }
                     break;
+                case "w":
                 case "ArrowUp":
                     if(this.snake.getDirection() == Dir.DOWN || !this.isGameStart) return;
                     this.snake.setDirection(Dir.UP);
                     break;
+                case "s":
                 case "ArrowDown":
                     if(this.snake.getDirection() == Dir.UP || !this.isGameStart) return;
                     this.snake.setDirection(Dir.DOWN);
                     break;
+                case "a":
                 case "ArrowLeft":
                     if(this.snake.getDirection() == Dir.RIGHT || !this.isGameStart) return;
                     this.snake.setDirection(Dir.LEFT);
                     break;
+                case "d":
                 case "ArrowRight":
                     if(this.snake.getDirection() == Dir.LEFT || !this.isGameStart) return;
                     this.snake.setDirection(Dir.RIGHT);

@@ -7,14 +7,16 @@ import "style/layout.less";
 // Components
 import Board from "components/Board";
 import Game from "components/Game";
+import Docs from "pages/Docs";
 import Settings from "pages/Settings";
 import About from "pages/About";
 
-export const tipMessage = "Press 'space' to start the game!";
-export const tipMessageRunning = "Fast Running is available! Press 'shift' to use.";
+export const tipMessage = "Press 'Space' to start the game!";
+export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use.";
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isGameStart: boolean = false;
+    private isDocsOpen: boolean = false;
     private isSettingsOpen: boolean = false;
     private isAboutOpen: boolean = false;
     private colorfulSkinTimer: any;
@@ -44,11 +46,24 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         });
     }
 
+    private docsHandle(): void {
+        var docsDialog = document.getElementById("docs");
+        if(!docsDialog) return;
+
+        if(!this.isDocsOpen && !this.isAboutOpen && !this.isSettingsOpen) {
+            docsDialog.style.width = "360px";
+            this.isDocsOpen = true;
+        } else {
+            docsDialog.style.width = "0";
+            this.isDocsOpen = false;
+        }
+    }
+
     private settingsHandle(): void {
         var settingsDialog = document.getElementById("settings");
         if(!settingsDialog) return;
 
-        if(!this.isSettingsOpen && !this.isAboutOpen) {
+        if(!this.isSettingsOpen && !this.isAboutOpen && !this.isDocsOpen) {
             settingsDialog.style.width = "300px";
             this.isSettingsOpen = true;
         } else {
@@ -61,7 +76,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         var aboutDialog = document.getElementById("about");
         if(!aboutDialog) return;
 
-        if(!this.isAboutOpen && !this.isSettingsOpen) {
+        if(!this.isAboutOpen && !this.isSettingsOpen && !this.isDocsOpen) {
             aboutDialog.style.width = "340px";
             this.isAboutOpen = true;
         } else {
@@ -76,12 +91,14 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                 <Board/>
                 <Game/>
 
+                <Docs/>
                 <Settings/>
                 <About/>
 
                 <p className="tip-message">{this.state.tipMessage}</p>
                 <button className="bottom-button" onClick={() => this.aboutHandle()}>About</button>
                 <button className="bottom-button" onClick={() => this.settingsHandle()}>Settings</button>
+                <button className="bottom-button" onClick={() => this.docsHandle()}>Help</button>
                 <button className="bottom-button" onClick={() => this.resetHandle()}>Reset</button>
             </div>
         );

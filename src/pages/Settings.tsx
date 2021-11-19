@@ -24,9 +24,11 @@ export default class Settings<P> extends Component<{}, SettingsState> {
             <div className="dialog-page" id="settings">
                 <h2>Settings</h2>
 
-                <p>Colorful Skin: <Switcher default={settings.colorfulSkin} storeKey="colorfulSkin"/></p>
+                <p>Colorful Skin <code>(refresh)</code>: <Switcher default={settings.colorfulSkin} storeKey="colorfulSkin"/></p>
                 <p>Through Wall: <Switcher default={settings.throughWall} storeKey="throughWall"/></p>
                 <p>Skin Color: <ColorPicker default={settings.skinColor} storeKey="skinColor"/></p>
+
+                <p><code>* "(refresh)" means the page will refresh when the option changes.</code></p>
             </div>
         );
     }
