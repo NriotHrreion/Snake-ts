@@ -125,14 +125,18 @@ export default class Game<P> extends Component<{}, GameState> {
         var gameContainer = document.getElementById("game");
         if(!gameContainer) return;
         gameContainer.addEventListener("touchstart", (e: TouchEvent) => {
+            e.preventDefault();
+
             var headPosition = this.snake.getHeadPosition();
 
             var offsetTop = gameContainer?.offsetTop, offsetLeft = gameContainer?.offsetLeft;
             if(!offsetTop || !offsetLeft) return;
             var touchPosition = {
-                x: Math.floor((e.touches[0].clientX - offsetTop) / 10),
-                y: Math.floor((e.touches[0].clientY - offsetLeft) / 10)
+                x: Math.floor((e.touches[0].pageX - offsetTop) / 10 + 11),
+                y: Math.floor((e.touches[0].pageY - offsetLeft) / 10 - 12)
             };
+
+            // alert("head: "+ headPosition.x +", "+ headPosition.y +" | touch: "+ touchPosition.x +", "+ touchPosition.y);
 
             var direction = this.snake.getDirection();
 
@@ -140,43 +144,54 @@ export default class Game<P> extends Component<{}, GameState> {
              * @todo Mobile Controls
              */
 
-            // if(headPosition.x > touchPosition.x && headPosition.y > touchPosition.y) { // Left Top
-            //     switch(direction) {
-            //         case Dir.UP:
-            //             this.doTurn("a");
-            //             break;
-            //         case Dir.LEFT:
-            //             this.doTurn("w");
-            //             break;
-            //     }
-            // } else if(headPosition.x < touchPosition.x && headPosition.y > touchPosition.y) { // Right Top
-            //     switch(direction) {
-            //         case Dir.UP:
-            //             this.doTurn("d");
-            //             break;
-            //         case Dir.RIGHT:
-            //             this.doTurn("w");
-            //             break;
-            //     }
-            // } else if(headPosition.x > touchPosition.x && headPosition.y < touchPosition.y) { // Left Bottom
-            //     switch(direction) {
-            //         case Dir.DOWN:
-            //             this.doTurn("a");
-            //             break;
-            //         case Dir.LEFT:
-            //             this.doTurn("s");
-            //             break;
-            //     }
-            // } else if(headPosition.x < touchPosition.x && headPosition.x < touchPosition.y) { // Right Bottom
-            //     switch(direction) {
-            //         case Dir.DOWN:
-            //             this.doTurn("d");
-            //             break;
-            //         case Dir.RIGHT:
-            //             this.doTurn("s");
-            //             break;
-            //     }
-            // }
+            if(headPosition.x > touchPosition.x && headPosition.y > touchPosition.y) { // Left Top
+                switch(direction) {
+                    case Dir.UP:
+                    case Dir.DOWN:
+                        this.doTurn("a");
+                        break;
+                    case Dir.LEFT:
+                    case Dir.RIGHT:
+                        this.doTurn("w");
+                        break;
+                }
+            }
+            if(headPosition.x < touchPosition.x && headPosition.y > touchPosition.y) { // Right Top
+                switch(direction) {
+                    case Dir.UP:
+                    case Dir.DOWN:
+                        this.doTurn("d");
+                        break;
+                    case Dir.LEFT:
+                    case Dir.RIGHT:
+                        this.doTurn("w");
+                        break;
+                }
+            }
+            if(headPosition.x > touchPosition.x && headPosition.y < touchPosition.y) { // Left Bottom
+                switch(direction) {
+                    case Dir.UP:
+                    case Dir.DOWN:
+                        this.doTurn("a");
+                        break;
+                    case Dir.LEFT:
+                    case Dir.RIGHT:
+                        this.doTurn("s");
+                        break;
+                }
+            }
+            if(headPosition.x < touchPosition.x && headPosition.x < touchPosition.y) { // Right Bottom
+                switch(direction) {
+                    case Dir.UP:
+                    case Dir.DOWN:
+                        this.doTurn("d");
+                        break;
+                    case Dir.LEFT:
+                    case Dir.RIGHT:
+                        this.doTurn("s");
+                        break;
+                }
+            }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "throughWall") {

@@ -15,6 +15,8 @@ export default class Docs extends Component {
 
                 <p>Then you can control your snake by <code>"PgUp", "PgDn", "Left", "Right"</code> or by <code>w, a, s, d</code>.</p>
 
+                <p>If you're using your phone to play, you can click the screen to control the snake.</p>
+
                 <p>Next, in the map, you may see a red block. It's the food as well as your goal.</p>
 
                 <p>When you see a deep red block, don't eat it. Because that's a bomb. If you eat it, you will lose 5 scores or "game over".</p>

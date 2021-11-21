@@ -1,0 +1,36 @@
+.dialog-page {
+    background-color: #e7e7e7;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width .3s;
+    overflow-y: auto;
+    color: #2C3E50;
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: @theme-color-light-1;
+    }
+    & > * {
+        min-width: 300px;
+        margin-left: 20px;
+        a {
+            color: #0468d7;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        code {
+            font-family: Consolas;
+            font-size: 10pt;
+        }
+    }
+    .switcher {
+        width: 70px;
+    }
+}
