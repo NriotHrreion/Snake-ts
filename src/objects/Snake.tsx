@@ -87,6 +87,13 @@ export default class Snake {
         return this.direction;
     }
 
+    public getHeadPosition(): {x: number, y: number} {
+        return {
+            x: this.body[this.body.length - 1].x,
+            y: this.body[this.body.length - 1].y
+        };
+    }
+
     public move(): void {
         if(!this.game.isGameStart) return;
 

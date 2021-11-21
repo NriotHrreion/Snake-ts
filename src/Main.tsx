@@ -35,6 +35,15 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
      * The following ...Handle() methods are the listener of the bottom buttons.
      */
 
+    private startHandle(): void {
+        if(this.isGameStart) return;
+
+        var gameStartEvent = new KeyboardEvent("keydown", {
+            key: " "
+        });
+        document.body.dispatchEvent(gameStartEvent);
+    }
+
     private resetHandle(): void {
         var gameResetEvent = new CustomEvent("gameReset");
         document.body.dispatchEvent(gameResetEvent);
@@ -85,21 +94,37 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         }
     }
 
+    private closeAllDialogs(): void {
+        this.isDocsOpen = this.isSettingsOpen = this.isAboutOpen = false;
+
+        var dialogs = document.getElementsByClassName("dialog-page");
+        for(let i = 0; i < dialogs.length; i++) {
+            if(!dialogs[i]) continue;
+
+            var elem = dialogs[i] as HTMLElement;
+            elem.style.width = "0";
+        }
+    }
+
     public render(): ReactElement {
         return (
             <div className="main-container">
                 <Board/>
                 <Game/>
 
+                {/* dialogs */}
                 <Docs/>
                 <Settings/>
                 <About/>
 
                 <p className="tip-message">{this.state.tipMessage}</p>
+
+                {/* buttons in bottom of the page */}
                 <button className="bottom-button" onClick={() => this.aboutHandle()}>About</button>
                 <button className="bottom-button" onClick={() => this.settingsHandle()}>Settings</button>
                 <button className="bottom-button" onClick={() => this.docsHandle()}>Help</button>
                 <button className="bottom-button" onClick={() => this.resetHandle()}>Reset</button>
+                <button className="bottom-button" onClick={() => this.startHandle()}>Start</button>
             </div>
         );
     }
@@ -129,7 +154,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                     } else {
                         return;
                     }
-
+            
                     this.setState({
                         tipMessage: tipMessageRunning
                     });
@@ -144,12 +169,23 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                     });
                     document.body.dispatchEvent(gameResetEvent);
                     break;
+                case "Escape":
+                    e.preventDefault();
+
+                    this.closeAllDialogs(); // When press `esc`, close all dialogs
+                    break;
             }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "colorfulSkin") {
                 window.location.reload();
             }
+        });
+        document.getElementById("root")?.addEventListener("click", (e: MouseEvent) => {
+            var targetElem = e.target as HTMLElement;
+
+            // When click other place, close all dialogs
+            if(targetElem.id == "root" || targetElem.className.indexOf("-container") > -1) this.closeAllDialogs();
         });
     }
 

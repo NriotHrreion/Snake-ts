@@ -71,6 +71,13 @@ export default class Game<P> extends Component<{}, GameState> {
         }, this.maxSpeed - this.speed);
     }
 
+    private doTurn(turnTo: string): void {
+        var turn = new KeyboardEvent("keydown", {
+            key: turnTo
+        });
+        document.body.dispatchEvent(turn);
+    }
+
     public render(): ReactElement {
         return (
             <div className="game-container" id="game"></div>
@@ -113,6 +120,63 @@ export default class Game<P> extends Component<{}, GameState> {
                     this.snake.setDirection(Dir.RIGHT);
                     break;
             }
+        });
+
+        var gameContainer = document.getElementById("game");
+        if(!gameContainer) return;
+        gameContainer.addEventListener("touchstart", (e: TouchEvent) => {
+            var headPosition = this.snake.getHeadPosition();
+
+            var offsetTop = gameContainer?.offsetTop, offsetLeft = gameContainer?.offsetLeft;
+            if(!offsetTop || !offsetLeft) return;
+            var touchPosition = {
+                x: Math.floor((e.touches[0].clientX - offsetTop) / 10),
+                y: Math.floor((e.touches[0].clientY - offsetLeft) / 10)
+            };
+
+            var direction = this.snake.getDirection();
+
+            /**
+             * @todo Mobile Controls
+             */
+
+            // if(headPosition.x > touchPosition.x && headPosition.y > touchPosition.y) { // Left Top
+            //     switch(direction) {
+            //         case Dir.UP:
+            //             this.doTurn("a");
+            //             break;
+            //         case Dir.LEFT:
+            //             this.doTurn("w");
+            //             break;
+            //     }
+            // } else if(headPosition.x < touchPosition.x && headPosition.y > touchPosition.y) { // Right Top
+            //     switch(direction) {
+            //         case Dir.UP:
+            //             this.doTurn("d");
+            //             break;
+            //         case Dir.RIGHT:
+            //             this.doTurn("w");
+            //             break;
+            //     }
+            // } else if(headPosition.x > touchPosition.x && headPosition.y < touchPosition.y) { // Left Bottom
+            //     switch(direction) {
+            //         case Dir.DOWN:
+            //             this.doTurn("a");
+            //             break;
+            //         case Dir.LEFT:
+            //             this.doTurn("s");
+            //             break;
+            //     }
+            // } else if(headPosition.x < touchPosition.x && headPosition.x < touchPosition.y) { // Right Bottom
+            //     switch(direction) {
+            //         case Dir.DOWN:
+            //             this.doTurn("d");
+            //             break;
+            //         case Dir.RIGHT:
+            //             this.doTurn("s");
+            //             break;
+            //     }
+            // }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "throughWall") {

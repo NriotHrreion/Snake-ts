@@ -19,9 +19,11 @@ export default class About extends Component {
 
                 <p>Source Code: <a href="https://github.com/NriotHrreion/Snake-ts">Click Me</a></p>
 
-                <p>Play Online: <a href="https://snake-ts-8258bf.netlify.app">Click Me</a></p>
+                <p>Play Online: <a href="https://snake-ts.nin.red">Click Me</a></p>
 
                 <p>My Github Homepage: <a href="https://github.com/NriotHrreion">Click Me</a></p>
+
+                <p>License: <a href="https://raw.githubusercontent.com/NriotHrreion/Snake-ts/main/LICENSE">Click Me</a></p>
                 
                 <p><em>Copyright &copy; NriotHrreion {new Date().getFullYear()}</em></p>
             </div>
