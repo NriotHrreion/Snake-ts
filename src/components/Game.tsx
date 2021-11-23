@@ -132,11 +132,11 @@ export default class Game<P> extends Component<{}, GameState> {
             var offsetTop = gameContainer?.offsetTop, offsetLeft = gameContainer?.offsetLeft;
             if(!offsetTop || !offsetLeft) return;
             var touchPosition = {
-                x: Math.floor((e.touches[0].pageX - offsetTop) / 10 + 11),
-                y: Math.floor((e.touches[0].pageY - offsetLeft) / 10 - 12)
+                x: Math.round((e.touches[0].pageX - offsetTop) / 10),
+                y: Math.round((e.touches[0].pageY - offsetLeft) / 10)
             };
 
-            // alert("head: "+ headPosition.x +", "+ headPosition.y +" | touch: "+ touchPosition.x +", "+ touchPosition.y);
+            alert("head: "+ headPosition.x +", "+ headPosition.y +" | touch: "+ touchPosition.x +", "+ touchPosition.y);
 
             var direction = this.snake.getDirection();
 
