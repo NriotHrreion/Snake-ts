@@ -12,7 +12,7 @@ import Settings from "pages/Settings";
 import About from "pages/About";
 
 export const tipMessage = "Press 'Space' to start the game!";
-export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use.";
+export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use. [Yu jiyang is SB]";
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isGameStart: boolean = false;

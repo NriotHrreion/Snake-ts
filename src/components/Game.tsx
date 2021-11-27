@@ -136,7 +136,7 @@ export default class Game<P> extends Component<{}, GameState> {
                 y: Math.round((e.touches[0].pageY - offsetLeft) / 10)
             };
 
-            alert("head: "+ headPosition.x +", "+ headPosition.y +" | touch: "+ touchPosition.x +", "+ touchPosition.y);
+            // alert("head: "+ headPosition.x +", "+ headPosition.y +" | touch: "+ touchPosition.x +", "+ touchPosition.y);
 
             var direction = this.snake.getDirection();
 
