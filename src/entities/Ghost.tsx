@@ -2,7 +2,7 @@
 import Game from "../components/Game";
 import { Towards } from "../components/Towards";
 import Position from "../objects/Position";
-import { AI } from "./AI";
+import AI from "./AI";
 
 import textureLeft from "../style/textures/ghost_left.png";
 import textureRight from "../style/textures/ghost_right.png";

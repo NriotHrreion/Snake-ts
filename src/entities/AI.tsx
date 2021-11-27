@@ -4,7 +4,7 @@ import Game from "../components/Game";
 import Ghost from "./Ghost";
 import Utils from "../utils";
 
-export namespace AI {
+namespace AI {
     export class GhostAI {
         private game: Game<{}>;
         private snake: Snake;
@@ -49,3 +49,5 @@ export namespace AI {
         }
     }
 }
+
+export default AI;
