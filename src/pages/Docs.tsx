@@ -25,6 +25,8 @@ export default class Docs extends Component {
 
                 <p>Also, the brown block (snickers) is a nice thing to eat. When eat it, you can ignore the bomb for a period of time.</p>
 
+                <p>Remember to pay attention to the ghost (a guy who is keeping moving), it will follow you and it gonna eat you!</p>
+
                 <p>The game hasn't been completely supported for mobile. And I'll try my best to complete it.</p>
 
                 <p>To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls">The project pulls</a></p>

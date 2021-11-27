@@ -5,6 +5,14 @@ export default class Utils {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    // Get a random number and get if the number is positive or negative
+    public static getRandomPN(min: number, max: number): number {
+        var num = this.getRandom(min, max);
+        var random = this.getRandom(0, 1);
+
+        return random == 1 ? num : -num;
+    }
+
     public static setBgOfAllClasses(className: string, value: string): void {
         if(document.body.getElementsByTagName("style").length > 0) {
             document.body.removeChild(document.body.getElementsByTagName("style")[0]);

@@ -1,6 +1,6 @@
 import Game from "../components/Game";
 import Item from "./Item";
-import FoodPosition from "./FoodPosition";
+import Position from "./Position";
 
 /**
  * When the snake eat it, the snake will be able to ignore the bomb for 10 seconds.
@@ -8,7 +8,7 @@ import FoodPosition from "./FoodPosition";
  * @todo
  */
 export default class Snickers extends Item {
-    public constructor(position: FoodPosition, game: Game<{}>) {
+    public constructor(position: Position, game: Game<{}>) {
         super(position, game, "snickers");
     }
 

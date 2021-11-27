@@ -9,14 +9,17 @@ import Food from "../objects/Food";
 import Bomb from "../objects/Bomb";
 import Candy from "../objects/Candy";
 import Snickers from "../objects/Snickers";
+import Ghost from "../entities/Ghost";
 import Utils from "../utils";
 
 export default class Game<P> extends Component<{}, GameState> {
-    private snake: Snake;
+    public snake: Snake;
     public food: Food;
     public bomb: Bomb | null;
     public candy: Candy | null;
     public snickers: Snickers | null;
+
+    public ghost!: Ghost | null;
 
     public throughWall: boolean = true;
     public isGameStart: boolean = false;
@@ -43,6 +46,7 @@ export default class Game<P> extends Component<{}, GameState> {
         this.bomb = null;
         this.candy = null;
         this.snickers = null;
+        this.ghost = null;
     }
 
     private start(): void {

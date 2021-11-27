@@ -5,6 +5,7 @@ import Food from "./Food";
 import Bomb from "./Bomb";
 import Candy from "./Candy";
 import Snickers from "./Snickers";
+import Ghost from "../entities/Ghost";
 import Utils from "../utils";
 
 export default class Snake {
@@ -218,6 +219,13 @@ export default class Snake {
                 this.game.snickers.display();
             }
 
+            // do spawn ghost (10%)
+            if(Utils.getRandom(0, 9) == 0) {
+                if(this.game.ghost) this.game.ghost.remove();
+                this.game.ghost = new Ghost({x: 0, y: 0}, this.game);
+                this.game.ghost.spawn();
+            }
+
             this.addLength();
         }
 
@@ -251,6 +259,21 @@ export default class Snake {
             this.game.snickers.eat();
             this.game.snickers = null;
         }
+
+        // check whether it has been eaten by the ghost
+        if(
+            this.game.ghost &&
+            this.body[this.body.length - 1].x == this.game.ghost.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.ghost.getPosition().y
+        ) {
+            this.game.ghost.remove();
+            this.game.ghost = null;
+
+            this.game.stop();
+        }
+
+        var snakeMoveEvent = new CustomEvent("snakeMove");
+        document.body.dispatchEvent(snakeMoveEvent);
     }
 }
 

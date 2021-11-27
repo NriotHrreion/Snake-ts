@@ -1,21 +1,21 @@
 import Game from "../components/Game";
-import FoodPosition from "./FoodPosition";
+import Position from "./Position";
 
 export default class Item {
-    public position: FoodPosition;
+    public position: Position;
     public game: Game<{}>;
     public className: string;
     
     public width: number = 10;
     public height: number = 10;
 
-    public constructor(position: FoodPosition, game: Game<{}>, className: string) {
+    public constructor(position: Position, game: Game<{}>, className: string) {
         this.position = position;
         this.game = game;
         this.className = className;
     }
 
-    public getPosition(): FoodPosition {
+    public getPosition(): Position {
         return this.position;
     }
 
