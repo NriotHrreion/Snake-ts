@@ -2,7 +2,7 @@
 import Game from "../components/Game";
 import { Towards } from "../components/Towards";
 import Position from "../objects/Position";
-import AI from "./AI";
+import { GhostAI } from "./AI";
 
 import textureLeft from "../style/textures/ghost_left.png";
 import textureRight from "../style/textures/ghost_right.png";
@@ -13,7 +13,7 @@ import textureRight from "../style/textures/ghost_right.png";
 export default class Ghost {
     private position: Position;
     private game: Game<{}>;
-    private ai: AI.GhostAI;
+    private ai: GhostAI;
 
     public toward: Towards = Towards.RIGHT;
 
@@ -24,7 +24,7 @@ export default class Ghost {
         this.position = position;
         this.game = game;
 
-        this.ai = new AI.GhostAI(this.game, this);
+        this.ai = new GhostAI(this.game, this);
     }
 
     public getPosition(): Position {
