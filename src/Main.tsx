@@ -14,7 +14,7 @@ import About from "pages/About";
 import favicon from "style/textures/icon_snake.png";
 
 export const tipMessage = "Press 'Space' to start the game!";
-export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use. [Yu jiyang is SB]";
+export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use.";
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isGameStart: boolean = false;
