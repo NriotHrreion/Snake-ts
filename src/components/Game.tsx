@@ -63,6 +63,9 @@ export default class Game<P> extends Component<{}, GameState> {
 
         var gameStopEvent = new CustomEvent("gameStop");
         document.body.dispatchEvent(gameStopEvent);
+
+        var gameResetEvent = new CustomEvent("gameReset");
+        document.body.dispatchEvent(gameResetEvent);
     }
 
     public setSpeed(speed: number): void {
