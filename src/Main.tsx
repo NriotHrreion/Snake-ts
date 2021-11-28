@@ -11,6 +11,8 @@ import Docs from "pages/Docs";
 import Settings from "pages/Settings";
 import About from "pages/About";
 
+import favicon from "style/textures/icon_snake.png";
+
 export const tipMessage = "Press 'Space' to start the game!";
 export const tipMessageRunning = "Fast Running is available! Press 'Shift' to use. [Yu jiyang is SB]";
 
@@ -130,6 +132,9 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
     }
 
     public componentDidMount(): void {
+        // Setup the favicon
+        (document.getElementById("favicon") as HTMLLinkElement).href = favicon;
+
         // Colorful skin player
         var colorfulSkin = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).colorfulSkin;
         if(colorfulSkin) {
