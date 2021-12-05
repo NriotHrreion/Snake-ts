@@ -62,6 +62,7 @@ export default class Ghost {
         if(!gameContainer) return;
 
         gameContainer.removeChild(gameContainer.getElementsByClassName("ghost")[0]);
+        this.ai.clearCycle();
     }
 
     public spawn(): void {
