@@ -1,0 +1,35 @@
+@import "./vars.less";
+
+@msgbox-width: 600px;
+@msgbox-height: 500px;
+
+.msgbox-container {
+    display: none;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: @msgbox-width;
+    height: @msgbox-height;
+    background-color: @color-light-gray;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .3) 0 1px 2px 0, rgba(0, 0, 0, .15) 0 1px 3px 1px;
+    .msgbox-header {
+        img {
+            margin-top: 30px;
+            width: 300px;
+            height: auto;
+            image-rendering: pixelated;
+        }
+        h1 {
+            color: #2C3E50;
+            font-size: 23pt;
+        }
+    }
+    .msgbox-contents {
+
+    }
+}

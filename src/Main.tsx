@@ -7,9 +7,11 @@ import "style/layout.less";
 // Components
 import Board from "components/Board";
 import Game from "components/Game";
+import MessageBox from "components/MessageBox";
 import Docs from "pages/Docs";
 import Settings from "pages/Settings";
 import About from "pages/About";
+import Button from "components/Button";
 
 import favicon from "style/textures/icon_snake.png";
 
@@ -18,12 +20,13 @@ export const tipMessageRunning = "Fast Running is available! Press 'Shift' to us
 
 export default class SnakeGame<P> extends Component<{}, MainState> {
     private isGameStart: boolean = false;
-    private isDocsOpen: boolean = false;
-    private isSettingsOpen: boolean = false;
-    private isAboutOpen: boolean = false;
     private colorfulSkinTimer: any;
 
-    private currentSkin: string = "hsl(359,100%,50%)"; // only for colorful skin player, isn't the common skin
+    // a map for the dialogs that can help to manage their status (opened or closed)
+    private dialogsStatus: Map<string, boolean> = new Map<string, boolean>();
+
+    // only for colorful skin player, isn't the common skin
+    private currentSkin: string = "hsl(359,100%,50%)";
     
     public constructor(props: P) {
         super(props);
@@ -31,6 +34,18 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         this.state = {
             tipMessage: tipMessage
         };
+
+        // init the dialogs' status in the map
+        this.dialogsStatus.set("docs", false);
+        this.dialogsStatus.set("settings", false);
+        this.dialogsStatus.set("about", false);
+    }
+
+    private getElem(id: string): HTMLElement {
+        var elem = document.getElementById(id);
+        if(!elem) return document.body;
+
+        return elem;
     }
 
     /**
@@ -57,47 +72,27 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         });
     }
 
-    private docsHandle(): void {
-        var docsDialog = document.getElementById("docs");
-        if(!docsDialog) return;
+    private openDialog(dialog: string, dialogWidth: number): void {
+        var dialogElem = this.getElem(dialog);
+        var num = 0;
 
-        if(!this.isDocsOpen && !this.isAboutOpen && !this.isSettingsOpen) {
-            docsDialog.style.width = "360px";
-            this.isDocsOpen = true;
+        this.dialogsStatus.forEach((value, key, map) => {
+            if(!value) num++;
+        });
+
+        if(num == 3) {
+            dialogElem.style.width = dialogWidth.toString() +"px";
+            this.dialogsStatus.set(dialog, true);
         } else {
-            docsDialog.style.width = "0";
-            this.isDocsOpen = false;
-        }
-    }
-
-    private settingsHandle(): void {
-        var settingsDialog = document.getElementById("settings");
-        if(!settingsDialog) return;
-
-        if(!this.isSettingsOpen && !this.isAboutOpen && !this.isDocsOpen) {
-            settingsDialog.style.width = "300px";
-            this.isSettingsOpen = true;
-        } else {
-            settingsDialog.style.width = "0";
-            this.isSettingsOpen = false;
-        }
-    }
-
-    private aboutHandle(): void {
-        var aboutDialog = document.getElementById("about");
-        if(!aboutDialog) return;
-
-        if(!this.isAboutOpen && !this.isSettingsOpen && !this.isDocsOpen) {
-            aboutDialog.style.width = "340px";
-            this.isAboutOpen = true;
-        } else {
-            aboutDialog.style.width = "0";
-            this.isAboutOpen = false;
+            dialogElem.style.width = "0";
+            this.dialogsStatus.set(dialog, false);
         }
     }
 
     private closeAllDialogs(): void {
-        this.isDocsOpen = this.isSettingsOpen = this.isAboutOpen = false;
+        this.dialogsStatus.forEach((value, key, map) => {
+            this.dialogsStatus.set(key, false);
+        });
 
         var dialogs = document.getElementsByClassName("dialog-page");
         for(let i = 0; i < dialogs.length; i++) {
@@ -119,14 +114,17 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                 <Settings/>
                 <About/>
 
+                {/* msgbox */}
+                <MessageBox/>
+
                 <p className="tip-message">{this.state.tipMessage}</p>
 
                 {/* buttons in bottom of the page */}
-                <button className="bottom-button" onClick={() => this.aboutHandle()}>About</button>
-                <button className="bottom-button" onClick={() => this.settingsHandle()}>Settings</button>
-                <button className="bottom-button" onClick={() => this.docsHandle()}>Help</button>
-                <button className="bottom-button" onClick={() => this.resetHandle()}>Reset</button>
-                <button className="bottom-button" onClick={() => this.startHandle()}>Start</button>
+                <Button onClick={() => this.openDialog("about", 340)} text="About"/>
+                <Button onClick={() => this.openDialog("settings", 300)} text="Settings"/>
+                <Button onClick={() => this.openDialog("docs", 360)} text="Help"/>
+                <Button onClick={() => this.resetHandle()} text="Reset"/>
+                <Button onClick={() => this.startHandle()} text="Start"/>
             </div>
         );
     }
@@ -185,6 +183,12 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
             if(e.detail.type == "colorfulSkin") {
                 window.location.reload();
             }
+        });
+        document.body.addEventListener("gameStop", () => {
+            if(this.isGameStart) this.isGameStart = false;
+
+            var messageBox = this.getElem("msgbox");
+            messageBox.style.display = "block";
         });
         document.getElementById("root")?.addEventListener("click", (e: MouseEvent) => {
             var targetElem = e.target as HTMLElement;
