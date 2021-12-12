@@ -226,7 +226,7 @@ export default class Snake {
             }
 
             // do spawn ghost (10%)
-            if(Utils.getRandom(0, 1) == 0) {
+            if(Utils.getRandom(0, 9) == 0) {
                 this.game.ghost = new Ghost({x: 0, y: 0}, this.game);
                 this.game.ghost.spawn();
             }
