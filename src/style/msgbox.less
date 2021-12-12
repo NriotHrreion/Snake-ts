@@ -1,7 +1,10 @@
 @import "./vars.less";
 
-@msgbox-width: 600px;
-@msgbox-height: 500px;
+@msgbox-width: 455px;
+@msgbox-height: 480px;
+
+@header-height: 50%;
+@content-height: 100% - @header-height;
 
 .msgbox-container {
     display: none;
@@ -18,8 +21,9 @@
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, .3) 0 1px 2px 0, rgba(0, 0, 0, .15) 0 1px 3px 1px;
     .msgbox-header {
+        height: @header-height;
         img {
-            margin-top: 30px;
+            margin-top: 50px;
             width: 300px;
             height: auto;
             image-rendering: pixelated;
@@ -30,6 +34,32 @@
         }
     }
     .msgbox-contents {
-
+        height: @content-height;
+        p {
+            font-size: 12pt;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+        button {
+            cursor: pointer;
+            width: 115px;
+            height: 39px;
+            margin-left: 10px;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            padding-bottom: 3px;
+            outline: none;
+            border: 0;
+            border-radius: 2px;
+            background-color: @theme-color-light-1;
+            color: #fff;
+            font-size: 11pt;
+            &:hover {
+                background-color: @theme-color-light-2;
+            }
+            &:active {
+                background-color: @theme-color-light-3;
+            }
+        }
     }
 }

@@ -8,12 +8,11 @@ export default class Button extends Component<ButtonProps, {}> {
 
     public render(): ReactElement {
         return (
-            <button className="bottom-button" onClick={this.props.onClick}>{this.props.text}</button>
+            <button className="bottom-button" onClick={this.props.onClick}>{this.props.children?.toString()}</button>
         );
     }
 }
 
 interface ButtonProps {
     onClick: () => any
-    text: string
 }

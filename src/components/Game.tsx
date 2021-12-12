@@ -58,7 +58,10 @@ export default class Game<P> extends Component<{}, GameState> {
     }
 
     public stop(): void {
-        alert("You Died\nBe more carefully next time...");
+        // alert("You Died\nBe more carefully next time...");
+        var msgbox = document.getElementById("msgbox")
+        if(msgbox) msgbox.style.display = "block";
+
         clearInterval(this.timerMove);
 
         var gameStopEvent = new CustomEvent("gameStop");
@@ -220,6 +223,7 @@ export default class Game<P> extends Component<{}, GameState> {
             this.bomb = null;
 
             this.score = 0;
+            this.speed = 150;
             this.isGameStart = false;
             this.isRunning = false;
             this.isAbleToRun = true;

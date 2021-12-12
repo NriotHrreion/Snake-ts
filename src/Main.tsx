@@ -115,16 +115,19 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                 <About/>
 
                 {/* msgbox */}
-                <MessageBox/>
+                <MessageBox onMessage={() => {
+                    this.getElem("msgbox").style.display = "none";
+                    this.resetHandle();
+                }}/>
 
                 <p className="tip-message">{this.state.tipMessage}</p>
 
                 {/* buttons in bottom of the page */}
-                <Button onClick={() => this.openDialog("about", 340)} text="About"/>
-                <Button onClick={() => this.openDialog("settings", 300)} text="Settings"/>
-                <Button onClick={() => this.openDialog("docs", 360)} text="Help"/>
-                <Button onClick={() => this.resetHandle()} text="Reset"/>
-                <Button onClick={() => this.startHandle()} text="Start"/>
+                <Button onClick={() => this.openDialog("about", 340)}>About</Button>
+                <Button onClick={() => this.openDialog("settings", 300)}>Settings</Button>
+                <Button onClick={() => this.openDialog("docs", 360)}>Help</Button>
+                <Button onClick={() => this.resetHandle()}>Reset</Button>
+                <Button onClick={() => this.startHandle()}>Start</Button>
             </div>
         );
     }
@@ -137,7 +140,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         var colorfulSkin = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).colorfulSkin;
         if(colorfulSkin) {
             // Do a loop for animating the colorful skin.
-            var h = 359
+            var h = 359;
             this.colorfulSkinTimer = setInterval(() => {
                 // Set the current color of the skin.
                 Utils.setBgOfAllClasses("snake-body", this.currentSkin);
@@ -183,12 +186,6 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
             if(e.detail.type == "colorfulSkin") {
                 window.location.reload();
             }
-        });
-        document.body.addEventListener("gameStop", () => {
-            if(this.isGameStart) this.isGameStart = false;
-
-            var messageBox = this.getElem("msgbox");
-            messageBox.style.display = "block";
         });
         document.getElementById("root")?.addEventListener("click", (e: MouseEvent) => {
             var targetElem = e.target as HTMLElement;
