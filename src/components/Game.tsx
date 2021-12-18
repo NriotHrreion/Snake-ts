@@ -10,6 +10,7 @@ import Bomb from "../objects/Bomb";
 import Candy from "../objects/Candy";
 import Snickers from "../objects/Snickers";
 import Ghost from "../entities/Ghost";
+import GhostGray from "../entities/GhostGray";
 import Utils from "../utils";
 
 export default class Game<P> extends Component<{}, GameState> {
@@ -20,6 +21,7 @@ export default class Game<P> extends Component<{}, GameState> {
     public snickers: Snickers | null;
 
     public ghost!: Ghost | null;
+    public ghostGray!: GhostGray | null;
 
     public throughWall: boolean = true;
     public isGameStart: boolean = false;

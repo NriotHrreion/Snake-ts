@@ -6,6 +6,7 @@ import Bomb from "./Bomb";
 import Candy from "./Candy";
 import Snickers from "./Snickers";
 import Ghost from "../entities/Ghost";
+import GhostGray from "../entities/GhostGray";
 import Utils from "../utils";
 
 export default class Snake {
@@ -191,6 +192,12 @@ export default class Snake {
                 this.game.ghost = null;
             }
 
+            // reset the ghost gray
+            if(this.game.ghostGray) {
+                this.game.ghostGray.remove();
+                this.game.ghostGray = null;
+            }
+
             // do spawn food (100%)
             this.game.food = new Food({
                 x: Utils.getRandom(0, 79),
@@ -229,6 +236,12 @@ export default class Snake {
             if(Utils.getRandom(0, 9) == 0) {
                 this.game.ghost = new Ghost({x: 0, y: 0}, this.game);
                 this.game.ghost.spawn();
+            }
+
+            // do spawn ghost gray (20%)
+            if(Utils.getRandom(0, 4) == 0) {
+                this.game.ghostGray = new GhostGray({x: 79, y: 0}, this.game);
+                this.game.ghostGray.spawn();
             }
 
             this.addLength();
@@ -273,6 +286,18 @@ export default class Snake {
         ) {
             this.game.ghost.remove();
             this.game.ghost = null;
+
+            this.game.stop();
+        }
+
+        // check whether it has been eaten by the ghost gray
+        if(
+            this.game.ghostGray &&
+            this.body[this.body.length - 1].x == this.game.ghostGray.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.ghostGray.getPosition().y
+        ) {
+            this.game.ghostGray.remove();
+            this.game.ghostGray = null;
 
             this.game.stop();
         }
