@@ -23,7 +23,9 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
     private colorfulSkinTimer: any;
 
     // a map for the dialogs that can help to manage their status (opened or closed)
-    private dialogsStatus: Map<string, boolean> = new Map<string, boolean>();
+    private dialogsStatus: Map<string, boolean> = new Map<string, boolean>([
+        ["docs", false], ["settings", false], ["about", false]
+    ]);
 
     // only for colorful skin player, isn't the common skin
     private currentSkin: string = "hsl(359,100%,50%)";
@@ -34,11 +36,6 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         this.state = {
             tipMessage: tipMessage
         };
-
-        // init the dialogs' status in the map
-        this.dialogsStatus.set("docs", false);
-        this.dialogsStatus.set("settings", false);
-        this.dialogsStatus.set("about", false);
     }
 
     private getElem(id: string): HTMLElement {
