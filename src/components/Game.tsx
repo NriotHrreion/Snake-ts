@@ -3,7 +3,6 @@ import { Component, ReactElement } from "react";
 import { Dir } from "./Dir";
 import SnakeGame from "../Main";
 import { tipMessageRunning } from "../Main";
-import TimersManager from "./TimersManager";
 import Snake from "../objects/Snake";
 import Food from "../objects/Food";
 import Bomb from "../objects/Bomb";
@@ -31,7 +30,7 @@ export default class Game<P> extends Component<{}, GameState> {
     public score: number = 0;
     public speed: number = 150;
 
-    private timersManager: TimersManager = new TimersManager(window);
+    private timersManager: Map<string, Timer> = new Map<string, Timer>();
 
     public timerMove: any;
     private maxSpeed: number = 300;
@@ -231,8 +230,8 @@ export default class Game<P> extends Component<{}, GameState> {
             this.isAbleToRun = true;
 
             clearInterval(this.timerMove);
-            this.timersManager.removeAll();
-            this.timersManager = new TimersManager(window);
+            this.timersManager.clear();
+            this.timersManager = new Map<string, Timer>();
             this.timerMove = null;
         });
         document.body.addEventListener("snakeRunning", (e: CustomEvent) => {
@@ -259,12 +258,13 @@ export default class Game<P> extends Component<{}, GameState> {
                         tipMessage: ""
                     });
                     this.setSpeed(150);
-                    this.timersManager.remove("runningAbility");
+                    clearInterval(this.timersManager.get("runningAbility")?.timer);
+                    this.timersManager.delete("runningAbility");
 
                     timeLeft = 10;
                 }
             }, 1000);
-            this.timersManager.register({name: "runningAbility", timer: timer, type: "interval"});
+            this.timersManager.set("runningAbility", {timer: timer, type: "interval"});
 
             var cdTimer = setTimeout(() => {
                 this.isAbleToRun = true;
@@ -272,11 +272,16 @@ export default class Game<P> extends Component<{}, GameState> {
                     tipMessage: tipMessageRunning
                 });
             }, 30 * 1000);
-            this.timersManager.register({name: "runningCooldown", timer: cdTimer, type: "timeout"});
+            this.timersManager.set("runningCooldown", {timer: cdTimer, type: "timeout"});
         });
     }
 }
 
 interface GameState {
     
+}
+
+interface Timer {
+    timer: any
+    type: "interval" | "timeout"
 }
