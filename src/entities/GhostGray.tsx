@@ -2,7 +2,9 @@
 import Game from "../components/Game";
 import { Towards } from "../components/Towards";
 import Position from "../objects/Position";
-import { GhostGrayAI } from "./AI";
+import AI from "./AI";
+import Utils from "../utils";
+import { Dir } from "../components/Dir";
 
 import textureLeft from "../style/textures/ghost_gray_left.png";
 import textureRight from "../style/textures/ghost_gray_right.png";
@@ -74,5 +76,51 @@ export default class GhostGray {
         ghostElem.style.left = this.width * this.position.x +"px";
         ghostElem.style.top = this.height * this.position.y +"px";
         gameContainer.appendChild(ghostElem);
+    }
+}
+
+class GhostGrayAI extends AI<GhostGray> {
+    public constructor(game: Game<{}>, self: GhostGray) {
+        super(game, self);
+    }
+
+    public cycle(): void {
+        super.cycle();
+        var selfPosition = this.self.getPosition();
+
+        switch(this.direction) {
+            case Dir.UP:
+                this.self.setPosition({x: selfPosition.x + Utils.getRandomPN(0, 1), y: selfPosition.y - 1});
+                break;
+            case Dir.DOWN:
+                this.self.setPosition({x: selfPosition.x + Utils.getRandomPN(0, 1), y: selfPosition.y + 1});
+                break;
+            case Dir.LEFT:
+                this.self.setPosition({x: selfPosition.x - 1, y: selfPosition.y + Utils.getRandomPN(0, 1)});
+                break;
+            case Dir.RIGHT:
+                this.self.setPosition({x: selfPosition.x + 1, y: selfPosition.y + Utils.getRandomPN(0, 1)});
+                break;
+        }
+    }
+
+    public onMove(): void {
+        super.onMove();
+        var headPosition = this.snake.getHeadPosition();
+        var selfPosition = this.self.getPosition();
+
+        if(selfPosition.y < headPosition.y) {
+            this.setDirection(Dir.DOWN);
+        } else if(selfPosition.y > headPosition.y) {
+            this.setDirection(Dir.UP);
+        }
+
+        if(selfPosition.y == headPosition.y) {
+            if(selfPosition.x < headPosition.x) {
+                this.setDirection(Dir.RIGHT);
+            } else if(selfPosition.x > headPosition.x) {
+                this.setDirection(Dir.LEFT);
+            }
+        }
     }
 }
