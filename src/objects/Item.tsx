@@ -34,10 +34,10 @@ export default class Item {
         var gameContainer = document.getElementById("game");
         if(!gameContainer) return;
 
-        var bombElem = document.createElement("div");
-        bombElem.className = this.className;
-        bombElem.style.left = this.width * this.position.x +"px";
-        bombElem.style.top = this.height * this.position.y +"px";
-        gameContainer.appendChild(bombElem);
+        var elem = document.createElement("div");
+        elem.className = this.className;
+        elem.style.left = this.width * this.position.x +"px";
+        elem.style.top = this.height * this.position.y +"px";
+        gameContainer.appendChild(elem);
     }
 }

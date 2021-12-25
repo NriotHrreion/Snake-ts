@@ -23,6 +23,7 @@ export default class Game<P> extends Component<{}, GameState> {
     public ghostGray!: GhostGray | null;
 
     public throughWall: boolean = true;
+    public generateWall: boolean = false;
     public isGameStart: boolean = false;
     public isRunning: boolean = false;
     public isAbleToRun: boolean = true;
@@ -39,10 +40,14 @@ export default class Game<P> extends Component<{}, GameState> {
         super(props);
 
         this.state = {};
+
+        this.generateWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).generateWall;
+
         this.snake = new Snake(3, this);
+        var foodBorder = this.generateWall ? 1 : 0;
         this.food = new Food({
-            x: Utils.getRandom(0, 79),
-            y: Utils.getRandom(0, 49)
+            x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
+            y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
         }, this);
         this.bomb = null;
         this.candy = null;
@@ -89,6 +94,83 @@ export default class Game<P> extends Component<{}, GameState> {
         document.body.dispatchEvent(turn);
     }
 
+    private generateRandomWall(): void {
+        var gameContainer = document.getElementById("game");
+        if(!gameContainer) return;
+
+        // Top & Bottom
+        var ax = 0;
+        for(var i = 0; i <= 79; i++) {
+            putWall(i, ax);
+            if(i == 79 && ax == 0) {
+                i = 0;
+                ax = 49;
+            }
+        }
+
+        // Left & Right
+        var bx = 79;
+        for(var i = 1; i <= 49; i++) {
+            putWall(bx, i);
+            if(i == 49 && bx == 79) {
+                i = 0;
+                bx = 0;
+            }
+        }
+
+        for(var i = 0; i < 4; i++) {
+            var doorWidth = Utils.getRandom(5, 30), doorBegin = 0;
+            switch(i) {
+                case 0: // top
+                    doorBegin = Utils.getRandom(5, 40);
+                    for(let j = doorBegin; j < doorWidth + doorBegin; j++) {
+                        breakWall(j, 0);
+                    }
+                    break;
+                case 1: // bottom
+                    doorBegin = Utils.getRandom(5, 40);
+                    for(let j = doorBegin; j < doorWidth + doorBegin; j++) {
+                        breakWall(j, 49);
+                    }
+                    break;
+                case 2: // left
+                    doorBegin = Utils.getRandom(5, 12);
+                    for(let j = doorBegin; j < doorWidth + doorBegin; j++) {
+                        breakWall(0, j);
+                    }
+                    break;
+                case 3: // right
+                    doorBegin = Utils.getRandom(5, 12);
+                    for(let j = doorBegin; j < doorWidth + doorBegin; j++) {
+                        breakWall(79, j);
+                    }
+                    break;
+            }
+        }
+
+        function putWall(x: number, y: number): void {
+            if(!gameContainer) return;
+
+            var wallElem = document.createElement("div");
+            wallElem.className = "wall";
+            wallElem.id = "wall-"+ x +"-"+ y;
+            wallElem.style.left = 10 * x +"px";
+            wallElem.style.top = 10 * y +"px";
+            gameContainer.appendChild(wallElem);
+        }
+
+        function breakWall(x: number, y: number): void {
+            if(!gameContainer) return;
+
+            var wallElem = document.getElementById("wall-"+ x +"-"+ y);
+            if(!wallElem) return;
+
+            wallElem.className = "";
+            wallElem.id = "";
+            wallElem.style.left = wallElem.style.top = "-1";
+        }
+    }
+
     public render(): ReactElement {
         return (
             <div className="game-container" id="game"></div>
@@ -96,11 +178,15 @@ export default class Game<P> extends Component<{}, GameState> {
     }
 
     public componentDidMount(): void {
-        this.snake.init();
-        this.food.display();
-
         var throughWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).throughWall;
         this.throughWall = throughWall;
+
+        // In here, the snake.init() ought to go first.
+        // That's because if the generateRandomWall() goes first, the snake.init method will delete the wall elements when it's executing.
+        this.snake.init();
+        if(this.generateWall) this.generateRandomWall();
+        // The same. No need to explain more.
+        this.food.display();
 
         document.body.addEventListener("keydown", (e: KeyboardEvent) => {
             switch(e.key) {
@@ -221,6 +307,7 @@ export default class Game<P> extends Component<{}, GameState> {
                 y: Utils.getRandom(0, 49)
             }, this);
             this.food.display();
+            this.generateRandomWall();
             this.bomb = null;
 
             this.score = 0;

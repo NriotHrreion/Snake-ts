@@ -27,8 +27,9 @@ export default class Settings<P> extends Component<{}, SettingsState> {
                 <p>Colorful Skin <code>(refresh)</code>: <Switcher default={settings.colorfulSkin} storeKey="colorfulSkin"/></p>
                 <p>Through Wall: <Switcher default={settings.throughWall} storeKey="throughWall"/></p>
                 <p>Skin Color: <ColorPicker default={settings.skinColor} storeKey="skinColor"/></p>
+                <p>Generate Wall: <Switcher default={settings.generateWall} storeKey="generateWall"/></p>
 
-                <p><code>* "(refresh)" means the page will refresh when the option changes.</code></p>
+                <p><code>* "(refresh)" means the page will auto refresh when the option changes.</code></p>
             </div>
         );
     }
@@ -111,7 +112,7 @@ interface SettingsState {
 
 interface SwitcherProps {
     default: boolean
-    storeKey: "colorfulSkin" | "throughWall"
+    storeKey: "colorfulSkin" | "throughWall" | "generateWall"
 }
 
 interface SwitcherState {
@@ -131,4 +132,5 @@ interface GameSettings {
     colorfulSkin: boolean
     throughWall: boolean
     skinColor: string
+    generateWall: boolean
 }

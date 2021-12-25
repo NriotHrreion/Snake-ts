@@ -25,8 +25,10 @@ export default class Snake {
     }
 
     public init(): void {
-        for(var i = 0; i < this.length; i++) {
-            this.body.push({id: i, x: i, y: 0});
+        var zeroPoint = this.game.generateWall ? 1 : 0;
+
+        for(var i = zeroPoint; i < this.length + zeroPoint; i++) {
+            this.body.push({id: i, x: i, y: zeroPoint});
         }
 
         var gameContainer = document.getElementById("game");
@@ -199,9 +201,10 @@ export default class Snake {
             }
 
             // do spawn food (100%)
+            var foodBorder = this.game.generateWall ? 1 : 0;
             this.game.food = new Food({
-                x: Utils.getRandom(0, 79),
-                y: Utils.getRandom(0, 49)
+                x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
+                y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
             }, this.game);
             this.game.food.display();
 
@@ -247,11 +250,13 @@ export default class Snake {
             this.addLength();
         }
 
+        var headNode = this.body.length - 1;
+
         // check whether it ate the bomb
         if(
             this.game.bomb &&
-            this.body[this.body.length - 1].x == this.game.bomb.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.bomb.getPosition().y &&
+            this.body[headNode].x == this.game.bomb.getPosition().x &&
+            this.body[headNode].y == this.game.bomb.getPosition().y &&
             !this.game.doIgnoreBomb
         ) {
             this.game.bomb.boom();
@@ -261,8 +266,8 @@ export default class Snake {
         // check whether it ate a candy
         if(
             this.game.candy &&
-            this.body[this.body.length - 1].x == this.game.candy.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.candy.getPosition().y
+            this.body[headNode].x == this.game.candy.getPosition().x &&
+            this.body[headNode].y == this.game.candy.getPosition().y
         ) {
             this.game.candy.eat();
             this.game.candy = null;
@@ -271,8 +276,8 @@ export default class Snake {
         // check whether it ate the snickers
         if(
             this.game.snickers &&
-            this.body[this.body.length - 1].x == this.game.snickers.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.snickers.getPosition().y
+            this.body[headNode].x == this.game.snickers.getPosition().x &&
+            this.body[headNode].y == this.game.snickers.getPosition().y
         ) {
             this.game.snickers.eat();
             this.game.snickers = null;
@@ -281,8 +286,8 @@ export default class Snake {
         // check whether it has been eaten by the ghost
         if(
             this.game.ghost &&
-            this.body[this.body.length - 1].x == this.game.ghost.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.ghost.getPosition().y
+            this.body[headNode].x == this.game.ghost.getPosition().x &&
+            this.body[headNode].y == this.game.ghost.getPosition().y
         ) {
             this.game.ghost.remove();
             this.game.ghost = null;
@@ -293,13 +298,22 @@ export default class Snake {
         // check whether it has been eaten by the ghost gray
         if(
             this.game.ghostGray &&
-            this.body[this.body.length - 1].x == this.game.ghostGray.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.ghostGray.getPosition().y
+            this.body[headNode].x == this.game.ghostGray.getPosition().x &&
+            this.body[headNode].y == this.game.ghostGray.getPosition().y
         ) {
             this.game.ghostGray.remove();
             this.game.ghostGray = null;
 
             this.game.stop();
+        }
+
+        // check whether it hit the wall
+        if(this.game.generateWall) {
+            var x = this.body[headNode].x, y = this.body[headNode].y;
+            var wallElem = document.getElementById("wall-"+ x +"-"+ y);
+            if(wallElem && wallElem.className == "wall") {
+                this.game.stop();
+            }
         }
 
         var snakeMoveEvent = new CustomEvent("snakeMove");

@@ -180,7 +180,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
             }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
-            if(e.detail.type == "colorfulSkin") {
+            if(e.detail.type == "colorfulSkin" || e.detail.type == "generateWall") {
                 window.location.reload();
             }
         });
