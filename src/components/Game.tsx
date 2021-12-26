@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
 /* eslint-disable eqeqeq */
 import { Component, ReactElement } from "react";
 import { Dir } from "./Dir";
