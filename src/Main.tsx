@@ -121,7 +121,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
 
                 {/* buttons in bottom of the page */}
                 <Button onClick={() => this.openDialog("about", 340)}>About</Button>
-                <Button onClick={() => this.openDialog("settings", 300)}>Settings</Button>
+                <Button onClick={() => this.openDialog("settings", 320)}>Settings</Button>
                 <Button onClick={() => this.openDialog("docs", 360)}>Help</Button>
                 <Button onClick={() => this.resetHandle()}>Reset</Button>
                 <Button onClick={() => this.startHandle()}>Start</Button>

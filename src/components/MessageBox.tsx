@@ -17,7 +17,7 @@ export default class MessageBox extends Component<MsgboxProps, {}> {
                     <h1>You Died</h1>
                 </div>
                 <div className="msgbox-contents">
-                    <p>Be more carefully next time</p>
+                    <p>Be more careful next time</p>
                     <p>Wish you Success!</p>
 
                     <button onClick={this.props.onMessage}>Try Again</button>

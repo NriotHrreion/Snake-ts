@@ -10,14 +10,6 @@ export default class Settings<P> extends Component<{}, SettingsState> {
     public render(): ReactElement {
         var storage = window.localStorage;
 
-        if(storage.getItem("snake-ts.settings") == null) {
-            storage.setItem("snake-ts.settings", JSON.stringify({
-                colorfulSkin: false,
-                throughWall: true,
-                skinColor: "#0468d7"
-            } as GameSettings));
-        }
-
         var settings = JSON.parse(storage.getItem("snake-ts.settings") as any) as GameSettings;
 
         return (
@@ -27,7 +19,7 @@ export default class Settings<P> extends Component<{}, SettingsState> {
                 <p>Colorful Skin <code>(refresh)</code>: <Switcher default={settings.colorfulSkin} storeKey="colorfulSkin"/></p>
                 <p>Through Wall: <Switcher default={settings.throughWall} storeKey="throughWall"/></p>
                 <p>Skin Color: <ColorPicker default={settings.skinColor} storeKey="skinColor"/></p>
-                <p>Generate Wall: <Switcher default={settings.generateWall} storeKey="generateWall"/></p>
+                <p>Generate Wall <code>(refresh)</code>: <Switcher default={settings.generateWall} storeKey="generateWall"/></p>
 
                 <p><code>* "(refresh)" means the page will auto refresh when the option changes.</code></p>
             </div>
@@ -71,7 +63,7 @@ class Switcher extends Component<SwitcherProps, SwitcherState> {
 
     public render(): ReactElement {
         return (
-            <button className="switcher" onClick={() => this.clickHandle()}>{this.state.isEnabled ? "Enabled" : "Disabled"}</button>
+            <button id={this.props.storeKey} className="switcher" onClick={() => this.clickHandle()}>{this.state.isEnabled ? "Enabled" : "Disabled"}</button>
         );
     }
 }

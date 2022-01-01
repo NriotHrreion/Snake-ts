@@ -41,8 +41,17 @@ export default class Game<P> extends Component<{}, GameState> {
         super(props);
 
         this.state = {};
-
-        this.generateWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).generateWall;
+        
+        var storage = window.localStorage;
+        if(storage.getItem("snake-ts.settings") == null) {
+            storage.setItem("snake-ts.settings", JSON.stringify({
+                colorfulSkin: false,
+                throughWall: true,
+                skinColor: "#0468d7",
+                generateWall: false
+            }));
+        }
+        this.generateWall = JSON.parse(storage.getItem("snake-ts.settings") as any).generateWall;
 
         this.snake = new Snake(3, this);
         var foodBorder = this.generateWall ? 1 : 0;
@@ -65,7 +74,7 @@ export default class Game<P> extends Component<{}, GameState> {
     }
 
     public stop(): void {
-        // alert("You Died\nBe more carefully next time...");
+        // alert("You Died\nBe more careful next time...");
         var msgbox = document.getElementById("msgbox")
         if(msgbox) msgbox.style.display = "block";
 
@@ -96,6 +105,8 @@ export default class Game<P> extends Component<{}, GameState> {
     }
 
     private generateRandomWall(): void {
+        if(!this.generateWall) return;
+
         var gameContainer = document.getElementById("game");
         if(!gameContainer) return;
 
@@ -182,10 +193,33 @@ export default class Game<P> extends Component<{}, GameState> {
         var throughWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).throughWall;
         this.throughWall = throughWall;
 
+        // If the user has opened "generateWall", the "throughWall" button will be disabled,
+        // so that the "generateWall" feature won't be meaningless
+        if(this.generateWall) {
+            var throughWallSwitcher = document.getElementById("throughWall") as HTMLButtonElement;
+            if(!throughWallSwitcher) return;
+
+            if(throughWallSwitcher.innerText == "Disabled") {
+                throughWallSwitcher.click();
+            }
+            throughWallSwitcher.disabled = true;
+        }
+
+        // If the user has opened "throughWall", the "generateWall", the "generateWall" button will be disabled
+        if(!this.throughWall) {
+            var generateWallSwitcher = document.getElementById("generateWall") as HTMLButtonElement;
+            if(!generateWallSwitcher) return;
+
+            if(generateWallSwitcher.innerText == "Enabled") {
+                generateWallSwitcher.click();
+            }
+            generateWallSwitcher.disabled = true;
+        }
+
         // In here, the snake.init() ought to go first.
         // That's because if the generateRandomWall() goes first, the snake.init method will delete the wall elements when it's executing.
         this.snake.init();
-        if(this.generateWall) this.generateRandomWall();
+        this.generateRandomWall();
         // The same. No need to explain more.
         this.food.display();
 
@@ -222,7 +256,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
         var gameContainer = document.getElementById("game");
         if(!gameContainer) return;
-        gameContainer.addEventListener("touchstart", (e: TouchEvent) => {
+        gameContainer.addEventListener("touchstart", (e: TouchEvent) => { // The mobile control code is like a shit
             e.preventDefault();
 
             var headPosition = this.snake.getHeadPosition();
@@ -294,6 +328,19 @@ export default class Game<P> extends Component<{}, GameState> {
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "throughWall") {
                 this.throughWall = e.detail.enabled;
+
+                var generateWallSwitcher = document.getElementById("generateWall") as HTMLButtonElement;
+                if(!generateWallSwitcher) return;
+
+                // Prevent the user enable "generateWall" while the "throughWall" is disabled
+                if(!this.throughWall) {
+                    if(generateWallSwitcher.innerText == "Enabled") {
+                        generateWallSwitcher.click();
+                    }
+                    generateWallSwitcher.disabled = true;
+                } else {
+                    generateWallSwitcher.disabled = false;
+                }
             }
         });
         document.body.addEventListener("gameReset", () => {
