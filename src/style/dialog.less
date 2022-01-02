@@ -1,6 +1,5 @@
 .dialog-page {
-    background-color: #e7e7e7;
-    width: 0;
+    width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
@@ -9,6 +8,9 @@
     overflow-y: auto;
     overflow-x: hidden;
     color: #2C3E50;
+    .contents {
+        margin-top: 24px;
+    }
     &::-webkit-scrollbar {
         width: 4px;
         background-color: transparent;
@@ -18,7 +20,7 @@
     }
     & > * {
         min-width: 300px;
-        margin-left: 20px;
+        margin-left: 60px;
         a {
             color: #0468d7;
             text-decoration: none;
@@ -31,7 +33,24 @@
             font-size: 10pt;
         }
     }
-    .switcher {
-        width: 70px;
+    h2, h4 {
+        margin-top: 30px;
     }
+    p {
+        margin-top: 10px;
+    }
+    .switcher {
+        width: 80px;
+        height: 25px;
+        font-size: 11pt;
+        padding: 0;
+        margin-left: 10px;
+        background-color: @theme-color-light-2;
+        border-color: transparent;
+        border-radius: 3px;
+    }
+}
+
+.dialog-page#about code {
+    font-size: 11pt;
 }

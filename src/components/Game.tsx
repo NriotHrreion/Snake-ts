@@ -75,7 +75,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
     public stop(): void {
         // alert("You Died\nBe more careful next time...");
-        var msgbox = document.getElementById("msgbox")
+        var msgbox = Utils.getElem("msgbox")
         if(msgbox) msgbox.style.display = "block";
 
         clearInterval(this.timerMove);
@@ -107,8 +107,7 @@ export default class Game<P> extends Component<{}, GameState> {
     private generateRandomWall(): void {
         if(!this.generateWall) return;
 
-        var gameContainer = document.getElementById("game");
-        if(!gameContainer) return;
+        var gameContainer = Utils.getElem("game");
 
         // Top & Bottom
         var ax = 0;
@@ -174,8 +173,7 @@ export default class Game<P> extends Component<{}, GameState> {
         function breakWall(x: number, y: number): void {
             if(!gameContainer) return;
 
-            var wallElem = document.getElementById("wall-"+ x +"-"+ y);
-            if(!wallElem) return;
+            var wallElem = Utils.getElem("wall-"+ x +"-"+ y);
 
             wallElem.className = "";
             wallElem.id = "";
@@ -192,29 +190,6 @@ export default class Game<P> extends Component<{}, GameState> {
     public componentDidMount(): void {
         var throughWall = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).throughWall;
         this.throughWall = throughWall;
-
-        // If the user has opened "generateWall", the "throughWall" button will be disabled,
-        // so that the "generateWall" feature won't be meaningless
-        if(this.generateWall) {
-            var throughWallSwitcher = document.getElementById("throughWall") as HTMLButtonElement;
-            if(!throughWallSwitcher) return;
-
-            if(throughWallSwitcher.innerText == "Disabled") {
-                throughWallSwitcher.click();
-            }
-            throughWallSwitcher.disabled = true;
-        }
-
-        // If the user has opened "throughWall", the "generateWall", the "generateWall" button will be disabled
-        if(!this.throughWall) {
-            var generateWallSwitcher = document.getElementById("generateWall") as HTMLButtonElement;
-            if(!generateWallSwitcher) return;
-
-            if(generateWallSwitcher.innerText == "Enabled") {
-                generateWallSwitcher.click();
-            }
-            generateWallSwitcher.disabled = true;
-        }
 
         // In here, the snake.init() ought to go first.
         // That's because if the generateRandomWall() goes first, the snake.init method will delete the wall elements when it's executing.
@@ -254,8 +229,7 @@ export default class Game<P> extends Component<{}, GameState> {
             }
         });
 
-        var gameContainer = document.getElementById("game");
-        if(!gameContainer) return;
+        var gameContainer = Utils.getElem("game");
         gameContainer.addEventListener("touchstart", (e: TouchEvent) => { // The mobile control code is like a shit
             e.preventDefault();
 
@@ -322,24 +296,6 @@ export default class Game<P> extends Component<{}, GameState> {
                     case Dir.RIGHT:
                         this.doTurn("s");
                         break;
-                }
-            }
-        });
-        document.body.addEventListener("settingsChange", (e: CustomEvent) => {
-            if(e.detail.type == "throughWall") {
-                this.throughWall = e.detail.enabled;
-
-                var generateWallSwitcher = document.getElementById("generateWall") as HTMLButtonElement;
-                if(!generateWallSwitcher) return;
-
-                // Prevent the user enable "generateWall" while the "throughWall" is disabled
-                if(!this.throughWall) {
-                    if(generateWallSwitcher.innerText == "Enabled") {
-                        generateWallSwitcher.click();
-                    }
-                    generateWallSwitcher.disabled = true;
-                } else {
-                    generateWallSwitcher.disabled = false;
                 }
             }
         });

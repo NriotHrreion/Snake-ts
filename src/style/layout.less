@@ -1,6 +1,7 @@
 @import "./vars.less";
 @import "./items.less";
 @import "./dialog.less";
+@import "./homepage.less";
 
 @board-height: 20%;
 @game-height: 100% - @board-height;
@@ -20,29 +21,22 @@ body {
         width: @main-width;
         height: @main-height;
         margin: 0 auto;
+        button {
+            float: right;
+            width: 60px;
+            height: 28px;
+            margin-top: 10px;
+            margin-left: 10px;
+            padding: 0;
+            background-color: @theme-color;
+            border-color: transparent;
+            font-size: 11pt;
+        }
         .tip-message {
             color: #2C3E50;
             font-size: 12pt;
             display: inline-block;
-        }
-        .bottom-button {
-            float: right;
-            cursor: pointer;
-            margin-left: 10px;
-            margin-block-start: 1em;
-            margin-block-end: 1em;
-            padding-bottom: 3px;
-            outline: none;
-            border: 0;
-            border-radius: 2px;
-            background-color: @theme-color-light-1;
-            color: #fff;
-            &:hover {
-                background-color: @theme-color-light-2;
-            }
-            &:active {
-                background-color: @theme-color-light-3;
-            }
+            margin-top: 10px;
         }
         .board-container {
             width: 100%;
@@ -62,8 +56,8 @@ body {
                     float: left;
                     padding: @padding-length;
                     padding-bottom: (@padding-length / 2) + 12;
-                    width: ((@main-width) / 2) - (2 * @padding-length);
-                    height: @board-height - (2 * @padding-length);
+                    width: @main-width / 2;
+                    height: 126px;
                     transition: background-color .1s;
                     p {
                         font-weight: bold;
@@ -77,12 +71,10 @@ body {
         .game-container {
             @border-width: 1px;
             position: relative;
-            height: @game-height;
-            width: 100% - (@border-width / 4);
+            height: 500px;
+            width: 100%;
             border: @border-width solid @theme-color;
             border-top: none;
-            border-bottom-left-radius: @main-border-radius;
-            border-bottom-right-radius: @main-border-radius;
             background-color: #fff;
             * {
                 position: absolute;

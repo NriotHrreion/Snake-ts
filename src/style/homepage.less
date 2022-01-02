@@ -1,0 +1,64 @@
+.homepage-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url("./textures/background.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .contents {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 50%;
+        .header-container {
+            width: 100%;
+            height: 40%;
+            display: inline-block;
+            text-align: center;
+            img {
+                margin-top: 140px;
+                image-rendering: pixelated;
+                width: 237px;
+                height: 38px;
+            }
+        }
+        .buttons-container {
+            width: 100%;
+            height: 40%;
+            text-align: center;
+            display: inline-block;
+            .menu-button {
+                display: block;
+                width: 145px;
+                height: 45px;
+                margin: 0 auto;
+                margin-top: 10px;
+                background-color: @theme-color;
+                border-color: transparent;
+                font-size: 13pt;
+            }
+        }
+    }
+    .info-container {
+        #name {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            margin: 0;
+            font-size: 10pt;
+            color: #fff;
+        }
+        #copy {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            margin: 0;
+            font-size: 10pt;
+            color: @theme-color-light-2;
+        }
+    }
+}

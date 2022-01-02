@@ -1,9 +1,14 @@
 /* eslint-disable eqeqeq */
 // Import Modules
-import { Component, ReactElement } from "react";
+import { Component, ReactElement, Fragment } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import Utils from "utils";
 // Layout Style
+import "bootstrap/dist/css/bootstrap.css";
 import "style/layout.less";
+// Pages
+import HomePage from "pages/HomePage";
 // Components
 import Board from "components/Board";
 import Game from "components/Game";
@@ -11,7 +16,6 @@ import MessageBox from "components/MessageBox";
 import Docs from "pages/Docs";
 import Settings from "pages/Settings";
 import About from "pages/About";
-import Button from "components/Button";
 
 import favicon from "style/textures/icon_snake.png";
 
@@ -38,17 +42,6 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         };
     }
 
-    private getElem(id: string): HTMLElement {
-        var elem = document.getElementById(id);
-        if(!elem) return document.body;
-
-        return elem;
-    }
-
-    /**
-     * The following ...Handle() methods are the listener of the bottom buttons.
-     */
-
     private startHandle(): void {
         if(this.isGameStart) return;
 
@@ -69,63 +62,35 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         });
     }
 
-    private openDialog(dialog: string, dialogWidth: number): void {
-        var dialogElem = this.getElem(dialog);
-        var num = 0;
-
-        this.dialogsStatus.forEach((value, key, map) => {
-            if(!value) num++;
-        });
-
-        if(num == 3) {
-            dialogElem.style.width = dialogWidth.toString() +"px";
-            this.dialogsStatus.set(dialog, true);
-        } else {
-            dialogElem.style.width = "0";
-            this.dialogsStatus.set(dialog, false);
-        }
-    }
-
-    private closeAllDialogs(): void {
-        this.dialogsStatus.forEach((value, key, map) => {
-            this.dialogsStatus.set(key, false);
-        });
-
-        var dialogs = document.getElementsByClassName("dialog-page");
-        for(let i = 0; i < dialogs.length; i++) {
-            if(!dialogs[i]) continue;
-
-            var elem = dialogs[i] as HTMLElement;
-            elem.style.width = "0";
-        }
-    }
-
     public render(): ReactElement {
         return (
-            <div className="main-container">
-                <Board/>
-                <Game/>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<HomePage/>}></Route>
+                    <Route path="/play" element={
+                        <Fragment>
+                            <div className="main-container">
+                                <Board/>
+                                <Game/>
 
-                {/* dialogs */}
-                <Docs/>
-                <Settings/>
-                <About/>
+                                <MessageBox onMessage={() => {
+                                    Utils.getElem("msgbox").style.display = "none";
+                                    this.resetHandle();
+                                }}/>
 
-                {/* msgbox */}
-                <MessageBox onMessage={() => {
-                    this.getElem("msgbox").style.display = "none";
-                    this.resetHandle();
-                }}/>
+                                <p className="tip-message">{this.state.tipMessage}</p>
 
-                <p className="tip-message">{this.state.tipMessage}</p>
-
-                {/* buttons in bottom of the page */}
-                <Button onClick={() => this.openDialog("about", 340)}>About</Button>
-                <Button onClick={() => this.openDialog("settings", 320)}>Settings</Button>
-                <Button onClick={() => this.openDialog("docs", 360)}>Help</Button>
-                <Button onClick={() => this.resetHandle()}>Reset</Button>
-                <Button onClick={() => this.startHandle()}>Start</Button>
-            </div>
+                                {/* The quit button can't use "href" attribute because of the CSS */}
+                                <Button onClick={() => window.location.href = "/"}>Quit</Button>
+                                <Button onClick={() => this.startHandle()}>Start</Button>
+                            </div>
+                        </Fragment>
+                    }></Route>
+                    <Route path="/settings" element={<Settings/>}></Route>
+                    <Route path="/docs" element={<Docs/>}></Route>
+                    <Route path="/about" element={<About/>}></Route>
+                </Routes>
+            </BrowserRouter>
         );
     }
 
@@ -172,23 +137,12 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                     });
                     document.body.dispatchEvent(gameResetEvent);
                     break;
-                case "Escape":
-                    e.preventDefault();
-
-                    this.closeAllDialogs(); // When press `esc`, close all dialogs
-                    break;
             }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "colorfulSkin" || e.detail.type == "generateWall") {
                 window.location.reload();
             }
-        });
-        document.getElementById("root")?.addEventListener("click", (e: MouseEvent) => {
-            var targetElem = e.target as HTMLElement;
-
-            // When click other place, close all dialogs
-            if(targetElem.id == "root" || targetElem.className.indexOf("-container") > -1) this.closeAllDialogs();
         });
     }
 

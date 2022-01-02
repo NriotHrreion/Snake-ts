@@ -76,4 +76,11 @@ export default class Utils {
 
         return length;
     }
+
+    public static getElem(id: string): HTMLElement {
+        var elem = document.getElementById(id);
+        if(!elem) return document.body;
+
+        return elem;
+    }
 }
