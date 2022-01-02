@@ -1,6 +1,5 @@
 import { Component, ReactElement } from "react";
 
-import Utils from "../utils";
 import MenuButton from "components/MenuButton";
 
 import icon from "../style/textures/icon.png";
