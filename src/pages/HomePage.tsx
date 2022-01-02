@@ -21,10 +21,10 @@ export default class HomePage extends Component<HomePageProps, {}> {
                         <img src={icon} alt="icon"/>
                     </div>
                     <div className="buttons-container">
-                        <MenuButton link="/play">Play</MenuButton>
-                        <MenuButton link="/settings">Settings</MenuButton>
-                        <MenuButton link="/docs">Help</MenuButton>
-                        <MenuButton link="/about">About</MenuButton>
+                        <MenuButton link="/#/play">Play</MenuButton>
+                        <MenuButton link="/#/settings">Settings</MenuButton>
+                        <MenuButton link="/#/docs">Help</MenuButton>
+                        <MenuButton link="/#/about">About</MenuButton>
                     </div>
                 </div>
                 <div className="info-container">

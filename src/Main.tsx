@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 // Import Modules
 import { Component, ReactElement, Fragment } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Utils from "utils";
 // Layout Style
@@ -64,7 +64,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
 
     public render(): ReactElement {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <Routes>
                     <Route path="/" element={<HomePage/>}></Route>
                     <Route path="/play" element={
@@ -90,7 +90,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                     <Route path="/docs" element={<Docs/>}></Route>
                     <Route path="/about" element={<About/>}></Route>
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 
