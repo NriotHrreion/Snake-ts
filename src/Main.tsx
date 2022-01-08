@@ -95,6 +95,13 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
     }
 
     public componentDidMount(): void {
+        // Check whether the item 'snake-ts.settings' in localStorage is created or not
+        // If not, create one
+        // issue: #2
+        if(window.localStorage.getItem("snake-ts.settings") == null) {
+            window.localStorage.setItem("snake-ts.settings", JSON.stringify({}));
+        }
+
         // Setup the favicon
         (document.getElementById("favicon") as HTMLLinkElement).href = favicon;
 
