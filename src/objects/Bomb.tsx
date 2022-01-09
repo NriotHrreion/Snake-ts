@@ -10,7 +10,7 @@ export default class Bomb extends Item {
         super(position, game, "bomb");
     }
 
-    public boom(): void {
+    public eat(): void {
         super.eat();
 
         if(this.game.score - 5 < 0) {

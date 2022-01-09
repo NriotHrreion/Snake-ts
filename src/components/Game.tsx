@@ -4,6 +4,7 @@ import { Component, ReactElement } from "react";
 import { Dir } from "./Dir";
 import SnakeGame from "../Main";
 import { tipMessageRunning } from "../Main";
+import Item from "../objects/Item";
 import Snake from "../objects/Snake";
 import Food from "../objects/Food";
 import Bomb from "../objects/Bomb";
@@ -15,10 +16,13 @@ import Utils from "../utils";
 
 export default class Game<P> extends Component<{}, GameState> {
     public snake: Snake;
-    public food: Food;
-    public bomb: Bomb | null;
-    public candy: Candy | null;
-    public snickers: Snickers | null;
+    public itemsManager: Map<string, Item | null> = new Map<string, Item | null>([
+        ["food", null],
+        ["food-package", null],
+        ["bomb", null],
+        ["candy", null],
+        ["snickers", null],
+    ]);
 
     public ghost!: Ghost | null;
     public ghostGray!: GhostGray | null;
@@ -55,14 +59,10 @@ export default class Game<P> extends Component<{}, GameState> {
 
         this.snake = new Snake(3, this);
         var foodBorder = this.generateWall ? 1 : 0;
-        this.food = new Food({
+        this.itemsManager.set("food", new Food({
             x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
             y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
-        }, this);
-        this.bomb = null;
-        this.candy = null;
-        this.snickers = null;
-        this.ghost = null;
+        }, this));
     }
 
     private start(): void {
@@ -194,7 +194,7 @@ export default class Game<P> extends Component<{}, GameState> {
         this.snake.init();
         this.generateRandomWall();
         // The same. No need to explain more.
-        this.food.display();
+        this.itemsManager.get("food")?.display();
 
         document.body.addEventListener("keydown", (e: KeyboardEvent) => {
             switch(e.key) {
@@ -304,13 +304,14 @@ export default class Game<P> extends Component<{}, GameState> {
             // Display the snake first, instead of displaying the food first.
             // When the snake is inited, it will remove all the elements under the game container.
             // So if the food goes first, the food will be removed by the snake.
-            this.food = new Food({
-                x: Utils.getRandom(0, 79),
-                y: Utils.getRandom(0, 49)
-            }, this);
-            this.food.display();
+            var foodBorder = this.generateWall ? 1 : 0;
+            this.itemsManager.set("food", new Food({
+                x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
+                y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
+            }, this));
+            this.itemsManager.get("food")?.display();
             this.generateRandomWall();
-            this.bomb = null;
+            this.itemsManager.set("bomb", null);
 
             this.score = 0;
             this.speed = 150;

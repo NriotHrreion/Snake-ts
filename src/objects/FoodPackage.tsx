@@ -3,17 +3,17 @@ import Item from "./Item";
 import Position from "./Position";
 
 /**
- * When the snake eat it, the snake will got 1 score.
+ * When the snake eat it, the snake will got 5 score.
  */
 export default class Food extends Item {
     public constructor(position: Position, game: Game<{}>) {
-        super(position, game, "food");
+        super(position, game, "food-package");
     }
 
     public eat(): void {
         super.eat();
 
-        this.game.score++;
+        this.game.score += 5;
 
         if(this.game.itemsManager.get("bomb") != null) {
             this.game.itemsManager.get("bomb")?.remove();
