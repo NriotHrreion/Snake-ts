@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable eqeqeq */
 export default class Utils {
