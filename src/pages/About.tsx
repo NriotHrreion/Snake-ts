@@ -2,10 +2,40 @@
 import { Component, ReactElement } from "react";
 
 export default class About extends Component {
+    private c: number = 0;
+
+    public constructor() {
+        super({});
+
+        var storage = window.localStorage;
+        if(storage.getItem("snake-ts.easter") == null) {
+            storage.setItem("snake-ts.easter", "0");
+        }
+    }
+    
+    private easterHandle() {
+        this.c++;
+
+        if(this.c == 5) {
+            var storage = window.localStorage;
+            var easter = storage.getItem("snake-ts.easter") == "0" ? false : true;
+
+            if(!easter) {
+                storage.setItem("snake-ts.easter", "1");
+                alert("Easter Mode has been opened!");
+            } else {
+                storage.setItem("snake-ts.easter", "0");
+                alert("Easter Mode has been closed!");
+            }
+
+            this.c = 0;
+        }
+    }
+
     public render(): ReactElement {
         return (
             <div className="dialog-page" id="about">
-                <h2>About</h2>
+                <h2 onClick={() => this.easterHandle()} onTouchCancel={() => this.easterHandle()}>About</h2>
 
                 <div className="contents">
                     <p>This is a Snake Game, and it's written in <b>React + TypeScript</b></p>

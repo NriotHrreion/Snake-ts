@@ -9,6 +9,18 @@ export default class Settings<P> extends Component<{}, SettingsState> {
         super(props);
     }
 
+    private renderEasterOption(): ReactElement | null {
+        var storage = window.localStorage;
+        var settings = JSON.parse(storage.getItem("snake-ts.settings") as any) as GameSettings;
+        var easter = storage.getItem("snake-ts.easter") == "0" ? false : true;
+
+        if(!easter) return null;
+
+        return (
+            <p>{Utils.newGUID()} <Switcher default={settings.easter} storeKey="easter"/></p>
+        );
+    }
+
     public render(): ReactElement {
         var storage = window.localStorage;
         var settings = JSON.parse(storage.getItem("snake-ts.settings") as any) as GameSettings;
@@ -22,6 +34,7 @@ export default class Settings<P> extends Component<{}, SettingsState> {
                     <p>Through Wall <Switcher default={settings.throughWall} storeKey="throughWall"/></p>
                     <p>Skin Color <ColorPicker default={settings.skinColor} storeKey="skinColor"/></p>
                     <p>Generate Wall <code>(refresh)</code> <Switcher default={settings.generateWall} storeKey="generateWall"/></p>
+                    {this.renderEasterOption()}
 
                     <p><code>* "(refresh)" means the page will auto refresh when the option changes.</code></p>
                 </div>
@@ -142,7 +155,7 @@ interface SettingsState {
 
 interface SwitcherProps {
     default: boolean
-    storeKey: "colorfulSkin" | "throughWall" | "generateWall"
+    storeKey: "colorfulSkin" | "throughWall" | "generateWall" | "easter"
 }
 
 interface SwitcherState {
@@ -163,4 +176,5 @@ interface GameSettings {
     throughWall: boolean
     skinColor: string
     generateWall: boolean
+    easter: boolean
 }

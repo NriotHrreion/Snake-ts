@@ -176,6 +176,14 @@ export default class Game<P> extends Component<{}, GameState> {
         }
     }
 
+    private randomBackgroundImage() {
+        var gameContainer = Utils.getElem("game");
+        gameContainer.style.backgroundColor = "transparent";
+        gameContainer.style.backgroundImage = "url(\"https://api.mtyqx.cn/api/random.php\")";
+        gameContainer.style.backgroundRepeat = "no-repeat";
+        gameContainer.style.backgroundSize = "100% 100%";
+    }
+
     public render(): ReactElement {
         return (
             <div className="game-container" id="game"></div>
@@ -192,6 +200,9 @@ export default class Game<P> extends Component<{}, GameState> {
         this.generateRandomWall();
         // The same. No need to explain more.
         this.itemsManager.get("food")?.display();
+
+        var easter = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).easter;
+        if(easter) this.randomBackgroundImage();
 
         document.body.addEventListener("keydown", (e: KeyboardEvent) => {
             switch(e.key) {
