@@ -81,7 +81,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                                 <p className="tip-message">{this.state.tipMessage}</p>
 
                                 {/* The quit button can't use "href" attribute because of the CSS */}
-                                <Button className="bottom-button" onClick={() => window.location.href = "/"}>Quit</Button>
+                                <Button className="bottom-button" onClick={() => window.location.href = "./index.html"}>Quit</Button>
                                 <Button className="bottom-button" onClick={() => this.startHandle()}>Start</Button>
                             </div>
                         </Fragment>
