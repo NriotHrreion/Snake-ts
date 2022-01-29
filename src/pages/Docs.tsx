@@ -30,7 +30,7 @@ export default class Docs extends Component {
 
                     <p>The game hasn't been completely supported for mobile. And I'll try my best to complete it.</p>
 
-                    <p>To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls">The project pulls</a></p>
+                    <p>To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls" target="_blank" rel="noreferrer">The project pulls</a></p>
 
                     <p><b>Enjoy the game :)</b></p>
                 </div>

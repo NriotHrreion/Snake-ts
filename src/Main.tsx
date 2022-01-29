@@ -3,6 +3,7 @@
 import { Component, ReactElement, Fragment } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Updater from "Updater";
 import Utils from "utils";
 // Layout Style
 import "bootstrap/dist/css/bootstrap.css";
@@ -151,6 +152,21 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                 window.location.reload();
             }
         });
+
+        // Check update (if the user is using the desktop edition)
+        if(window.navigator.userAgent.toLowerCase().indexOf("electron") > -1) {
+            var updater = new Updater();
+            updater.getLatestVersionInfo().then((latest: VersionInfo) => {
+                var currentVersion = updater.getCurrentVersion();
+
+                // Update
+                if(latest.version != null && currentVersion != latest.version) {
+                    var doUpdate = window.confirm("A latest released version is available. Do you want to update?");
+
+                    if(doUpdate) updater.update(latest.downloadURL);
+                }
+            });
+        }
     }
 
     public componentWillUnmount(): void {
@@ -160,4 +176,9 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
 
 interface MainState {
     tipMessage: string
+}
+
+interface VersionInfo {
+    version: string
+    downloadURL: string
 }
