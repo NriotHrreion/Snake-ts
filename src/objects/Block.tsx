@@ -1,7 +1,7 @@
 import Game from "../components/Game";
 import Position from "./Position";
 
-export default class Item {
+export default class Block {
     public position: Position;
     public game: Game<{}>;
     public className: string;

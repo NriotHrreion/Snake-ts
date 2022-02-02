@@ -69,3 +69,13 @@ declare module '*.module.sass' {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
+
+// xxtea-node
+declare module "xxtea-node" {
+  export function toBytes(str: string): Uint8Array;
+  export function toString(bytes: Uint8Array): string;
+  export function encrypt(data: Uint8Array, key: Uint8Array): Uint8Array;
+  export function encryptToString(): string;
+  export function decrypt(data: string, key: Uint8Array): Uint8Array;
+  export function decryptToString(): string;
+};

@@ -1,11 +1,7 @@
 /* eslint-disable eqeqeq */
 import { Dir } from "../components/Dir";
 import Game from "../components/Game";
-import Food from "./Food";
-import FoodPackage from "./FoodPackage";
-import Bomb from "./Bomb";
-import Candy from "./Candy";
-import Snickers from "./Snickers";
+import { Blocks } from "../objects/Blocks";
 import Ghost from "../entities/Ghost";
 import GhostGray from "../entities/GhostGray";
 import Utils from "../utils";
@@ -184,10 +180,10 @@ export default class Snake {
 
         // check whether it ate the food
         if(
-            this.body[this.body.length - 1].x == this.game.itemsManager.get("food")?.getPosition().x &&
-            this.body[this.body.length - 1].y == this.game.itemsManager.get("food")?.getPosition().y
+            this.body[this.body.length - 1].x == this.game.blocksManager.get("food")?.getPosition().x &&
+            this.body[this.body.length - 1].y == this.game.blocksManager.get("food")?.getPosition().y
         ) {
-            this.game.itemsManager.get("food")?.eat();
+            this.game.blocksManager.get("food")?.eat();
 
             // reset the ghost
             if(this.game.ghost) {
@@ -204,46 +200,46 @@ export default class Snake {
             var foodBorder = this.game.generateWall ? 1 : 0;
 
             // do spawn food (100%)
-            this.game.itemsManager.set("food", new Food({
+            this.game.blocksManager.set("food", new Blocks.Food({
                 x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
                 y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
             }, this.game));
-            this.game.itemsManager.get("food")?.display();
+            this.game.blocksManager.get("food")?.display();
 
-            // do spawn (5%)
+            // do spawn food package (5%)
             if(Utils.getRandom(0, 19) == 0) {
-                this.game.itemsManager.set("food-package", new FoodPackage({
+                this.game.blocksManager.set("food-package", new Blocks.FoodPackage({
                     x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
                     y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
                 }, this.game));
-                this.game.itemsManager.get("food-package")?.display();
+                this.game.blocksManager.get("food-package")?.display();
             }
 
             // do spawn bomb (50%)
             if(Utils.getRandom(0, 1) == 0) {
-                this.game.itemsManager.set("bomb", new Bomb({
+                this.game.blocksManager.set("bomb", new Blocks.Bomb({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));
-                this.game.itemsManager.get("bomb")?.display();
+                this.game.blocksManager.get("bomb")?.display();
             }
 
             // do spawn candy (33%)
             if(Utils.getRandom(0, 2) == 0) {
-                this.game.itemsManager.set("candy", new Candy({
+                this.game.blocksManager.set("candy", new Blocks.Candy({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));
-                this.game.itemsManager.get("candy")?.display();
+                this.game.blocksManager.get("candy")?.display();
             }
 
             // do spawn snickers (20%)
             if(Utils.getRandom(0, 4) == 0) {
-                this.game.itemsManager.set("snickers", new Snickers({
+                this.game.blocksManager.set("snickers", new Blocks.Snickers({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));
-                this.game.itemsManager.get("snickers")?.display();
+                this.game.blocksManager.get("snickers")?.display();
             }
 
             // do spawn ghost (10%)
@@ -265,43 +261,43 @@ export default class Snake {
 
         // check whether it ate the food package
         if(
-            this.game.itemsManager.get("food-package") &&
-            this.body[headNode].x == this.game.itemsManager.get("food-package")?.getPosition().x &&
-            this.body[headNode].y == this.game.itemsManager.get("food-package")?.getPosition().y
+            this.game.blocksManager.get("food-package") &&
+            this.body[headNode].x == this.game.blocksManager.get("food-package")?.getPosition().x &&
+            this.body[headNode].y == this.game.blocksManager.get("food-package")?.getPosition().y
         ) {
-            this.game.itemsManager.get("food-package")?.eat();
-            this.game.itemsManager.set("food-package", null);
+            this.game.blocksManager.get("food-package")?.eat();
+            this.game.blocksManager.set("food-package", null);
         }
 
         // check whether it ate the bomb
         if(
-            this.game.itemsManager.get("bomb") &&
-            this.body[headNode].x == this.game.itemsManager.get("bomb")?.getPosition().x &&
-            this.body[headNode].y == this.game.itemsManager.get("bomb")?.getPosition().y &&
+            this.game.blocksManager.get("bomb") &&
+            this.body[headNode].x == this.game.blocksManager.get("bomb")?.getPosition().x &&
+            this.body[headNode].y == this.game.blocksManager.get("bomb")?.getPosition().y &&
             !this.game.doIgnoreBomb
         ) {
-            this.game.itemsManager.get("bomb")?.eat();
-            this.game.itemsManager.set("bomb", null);
+            this.game.blocksManager.get("bomb")?.eat();
+            this.game.blocksManager.set("bomb", null);
         }
 
         // check whether it ate a candy
         if(
-            this.game.itemsManager.get("candy") &&
-            this.body[headNode].x == this.game.itemsManager.get("candy")?.getPosition().x &&
-            this.body[headNode].y == this.game.itemsManager.get("candy")?.getPosition().y
+            this.game.blocksManager.get("candy") &&
+            this.body[headNode].x == this.game.blocksManager.get("candy")?.getPosition().x &&
+            this.body[headNode].y == this.game.blocksManager.get("candy")?.getPosition().y
         ) {
-            this.game.itemsManager.get("candy")?.eat();
-            this.game.itemsManager.set("candy", null);
+            this.game.blocksManager.get("candy")?.eat();
+            this.game.blocksManager.set("candy", null);
         }
 
         // check whether it ate the snickers
         if(
-            this.game.itemsManager.get("snickers") &&
-            this.body[headNode].x == this.game.itemsManager.get("snickers")?.getPosition().x &&
-            this.body[headNode].y == this.game.itemsManager.get("snickers")?.getPosition().y
+            this.game.blocksManager.get("snickers") &&
+            this.body[headNode].x == this.game.blocksManager.get("snickers")?.getPosition().x &&
+            this.body[headNode].y == this.game.blocksManager.get("snickers")?.getPosition().y
         ) {
-            this.game.itemsManager.get("snickers")?.eat();
-            this.game.itemsManager.set("snickers", null);
+            this.game.blocksManager.get("snickers")?.eat();
+            this.game.blocksManager.set("snickers", null);
         }
 
         // check whether it has been eaten by the ghost

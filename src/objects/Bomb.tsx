@@ -1,11 +1,11 @@
 import Game from "../components/Game";
-import Item from "./Item";
+import Block from "./Block";
 import Position from "./Position";
 
 /**
  * When the snake eat it, the snake will lose 5 scores.
  */
-export default class Bomb extends Item {
+export default class Bomb extends Block {
     public constructor(position: Position, game: Game<{}>) {
         super(position, game, "bomb");
     }

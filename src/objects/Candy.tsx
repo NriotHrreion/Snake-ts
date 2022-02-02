@@ -1,11 +1,11 @@
 import Game from "../components/Game";
-import Item from "./Item";
+import Block from "./Block";
 import Position from "./Position";
 
 /**
  * When the snake eat it, the snake can move faster for 5 seconds.
  */
-export default class Candy extends Item {
+export default class Candy extends Block {
     public constructor(position: Position, game: Game<{}>) {
         super(position, game, "candy");
     }

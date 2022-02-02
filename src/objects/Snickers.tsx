@@ -1,5 +1,5 @@
 import Game from "../components/Game";
-import Item from "./Item";
+import Block from "./Block";
 import Position from "./Position";
 
 /**
@@ -7,7 +7,7 @@ import Position from "./Position";
  * 
  * @todo
  */
-export default class Snickers extends Item {
+export default class Snickers extends Block {
     public constructor(position: Position, game: Game<{}>) {
         super(position, game, "snickers");
     }

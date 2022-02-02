@@ -1,11 +1,11 @@
 import Game from "../components/Game";
-import Item from "./Item";
+import Block from "./Block";
 import Position from "./Position";
 
 /**
  * When the snake eat it, the snake will got 1 score.
  */
-export default class Food extends Item {
+export default class Food extends Block {
     public constructor(position: Position, game: Game<{}>) {
         super(position, game, "food");
     }
@@ -15,19 +15,19 @@ export default class Food extends Item {
 
         this.game.score++;
 
-        if(this.game.itemsManager.get("bomb") != null) {
-            this.game.itemsManager.get("bomb")?.remove();
-            this.game.itemsManager.set("bomb", null);
+        if(this.game.blocksManager.get("bomb") != null) {
+            this.game.blocksManager.get("bomb")?.remove();
+            this.game.blocksManager.set("bomb", null);
         }
 
-        if(this.game.itemsManager.get("candy") != null) {
-            this.game.itemsManager.get("candy")?.remove();
-            this.game.itemsManager.set("candy", null);
+        if(this.game.blocksManager.get("candy") != null) {
+            this.game.blocksManager.get("candy")?.remove();
+            this.game.blocksManager.set("candy", null);
         }
 
-        if(this.game.itemsManager.get("snickers") != null) {
-            this.game.itemsManager.get("snickers")?.remove();
-            this.game.itemsManager.set("snickers", null);
+        if(this.game.blocksManager.get("snickers") != null) {
+            this.game.blocksManager.get("snickers")?.remove();
+            this.game.blocksManager.set("snickers", null);
         }
 
         var getScoreEvent = new CustomEvent("getScore", {detail: {

@@ -2,6 +2,7 @@
 @import "./items.less";
 @import "./dialog.less";
 @import "./homepage.less";
+@import "./shop.less";
 
 @board-height: 20%;
 @game-height: 100% - @board-height;
@@ -83,6 +84,50 @@ body {
                 height: @ingame-block-height;
                 image-rendering: pixelated;
                 background-size: 10px 10px;
+            }
+        }
+    }
+    .inventory-container {
+        position: absolute;
+        background-color: @theme-color;
+        color: #fff;
+        width: 300px;
+        height: 630px;
+        top: 20px;
+        right: 30px;
+        padding: 15px;
+        border-radius: @main-border-radius;
+        .slots {
+            background-color: #fff;
+            cursor: not-allowed;
+            .slot {
+                width: 50px;
+                height: 50px;
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+                image-rendering: pixelated;
+                display: inline-block;
+                cursor: pointer;
+                span#amount {
+                    color: #646464;
+                    font-size: 10pt;
+                    vertical-align: top;
+                }
+            }
+        }
+        .armor-slots .slots {
+            width: 4 * 50px;
+            height: 50px;
+        }
+        .item-slots {
+            margin-top: 20px;
+            .slots {
+                width: 5 * 50px;
+                height: 9 * 50px;
+                overflow-y: auto;
+                .slot {
+                    border: 2px solid #fff;
+                }
             }
         }
     }

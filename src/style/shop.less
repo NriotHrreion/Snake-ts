@@ -1,0 +1,134 @@
+h2 span#wallet {
+    float: right;
+    font-size: 14pt;
+    font-weight: 400;
+    margin-right: 60px;
+}
+
+.shop-container {
+    h2 {
+        margin-top: 30px;
+    }
+    a {
+        text-decoration: none;
+    }
+    & > * {
+        margin-left: 60px;
+    }
+    .list {
+        .shop-item {
+            width: 200px;
+            height: 300px;
+            background-color: #eee;
+            display: inline-block;
+            margin-top: 30px;
+            margin-right: 30px;
+            border-radius: @main-border-radius;
+            cursor: pointer;
+            &:hover {
+                background-color: #ddd;
+            }
+            .shop-item-icon {
+                margin: 20px;
+                margin-bottom: 10px;
+                display: inline-block;
+                img {
+                    width: 160px;
+                    height: 160px;
+                    image-rendering: pixelated;
+                    border-radius: @main-border-radius;
+                }
+            }
+            .shop-item-description {
+                width: 100%;
+                height: 30px;
+                p {
+                    margin-bottom: 0;
+                }
+                p#name {
+                    color: #303030;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    float: left;
+                    margin-left: 25px;
+                }
+                p#price {
+                    font-size: 11pt;
+                    font-family: Consolas;
+                    float: right;
+                    margin-right: 25px;
+                }
+            }
+            .shop-item-buttons {
+                width: 100%;
+                height: 38px;
+                margin-top: 20px;
+                .shop-item-buy {
+                    display: block;
+                    float: left;
+                    margin-left: 20px;
+                }
+                .shop-item-link {
+                    display: block;
+                    float: right;
+                    margin-right: 20px;
+                }
+            }
+        }
+    }
+}
+
+.details-container {
+    & > * {
+        margin-left: 60px;
+    }
+    h2 {
+        margin-top: 30px;
+    }
+    .content {
+        width: 810px;
+        height: 500px;
+        margin-top: 30px;
+        .commodity-icon {
+            width: 400px;
+            float: left;
+            img#icon {
+                image-rendering: pixelated;
+                width: 300px;
+                height: 300px;
+            }
+        }
+        .commodity-info {
+            width: 400px;
+            float: right;
+            span {
+                color: #303030;
+            }
+            span#name {
+                font-size: 20pt;
+                font-weight: bold;
+            }
+            span#type {
+                color: #fff;
+                margin-left: 5px;
+                vertical-align: text-top;
+            }
+            span#price {
+                font-size: 14pt;
+                font-family: Consolas;
+                margin-left: 10px;
+                vertical-align: 10%;
+            }
+            span#amount {
+                margin-left: 3px;
+                vertical-align: text-bottom;
+            }
+            span#description {
+                font-size: 11pt;
+            }
+            .commodity-button {
+                margin-right: 10px;
+            }
+        }
+    }
+}

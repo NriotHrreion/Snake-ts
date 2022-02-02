@@ -1,11 +1,12 @@
 /* eslint-disable eqeqeq */
-import React, { Component, ReactElement } from "react";
+import { Component, ReactElement } from "react";
 
 export default class Docs extends Component {
     public render(): ReactElement {
         return (
             <div className="dialog-page" id="docs">
                 <h2>How To Play</h2>
+                <a href="/index.html">&lt; Back</a>
 
                 <div className="contents">
                     <p><em>By NriotHrreion</em></p>
@@ -28,9 +29,9 @@ export default class Docs extends Component {
 
                     <p>Remember to pay attention to the ghost (a guy who is keeping moving), it will follow you and it gonna eat you!</p>
 
-                    <p>The game hasn't been completely supported for mobile. And I'll try my best to complete it.</p>
-
-                    <p>To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls" target="_blank" rel="noreferrer">The project pulls</a></p>
+                    <p>To earn money for your wallet, you can try your best to play the game. After 'game over' (the snake died), the score will change into money and come to your wallet.</p>
+                    
+                    <p>The game hasn't been completely supported for mobile. And I'll try my best to complete it. To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls" target="_blank" rel="noreferrer">The project pulls</a></p>
 
                     <p><b>Enjoy the game :)</b></p>
                 </div>

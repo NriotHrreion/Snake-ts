@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 /* eslint-disable eqeqeq */
 import { Component, ReactElement } from "react";
+import Shop from "../shop/Shop";
+import Item from "../items/Item";
 import { Dir } from "./Dir";
 import SnakeGame from "../Main";
 import { tipMessageRunning } from "../Main";
-import Item from "../objects/Item";
+import Block from "../objects/Block";
+import { Blocks } from "../objects/Blocks";
 import Snake from "../objects/Snake";
 import Food from "../objects/Food";
 import Ghost from "../entities/Ghost";
@@ -13,7 +16,7 @@ import Utils from "../utils";
 
 export default class Game<P> extends Component<{}, GameState> {
     public snake: Snake;
-    public itemsManager: Map<string, Item | null> = new Map<string, Item | null>([
+    public blocksManager: Map<string, Block | null> = new Map<string, Block | null>([
         ["food", null],
         ["food-package", null],
         ["bomb", null],
@@ -56,7 +59,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
         this.snake = new Snake(3, this);
         var foodBorder = this.generateWall ? 1 : 0;
-        this.itemsManager.set("food", new Food({
+        this.blocksManager.set("food", new Blocks.Food({
             x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
             y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
         }, this));
@@ -80,6 +83,8 @@ export default class Game<P> extends Component<{}, GameState> {
 
         var gameStopEvent = new CustomEvent("gameStop");
         document.body.dispatchEvent(gameStopEvent);
+
+        Shop.get().setWallet(Shop.get().getWallet() + (this.score / 2));
     }
 
     public setSpeed(speed: number): void {
@@ -199,7 +204,7 @@ export default class Game<P> extends Component<{}, GameState> {
         this.snake.init();
         this.generateRandomWall();
         // The same. No need to explain more.
-        this.itemsManager.get("food")?.display();
+        this.blocksManager.get("food")?.display();
 
         var easter = JSON.parse(window.localStorage.getItem("snake-ts.settings") as any).easter;
         if(easter) this.randomBackgroundImage();
@@ -313,13 +318,13 @@ export default class Game<P> extends Component<{}, GameState> {
             // When the snake is inited, it will remove all the elements under the game container.
             // So if the food goes first, the food will be removed by the snake.
             var foodBorder = this.generateWall ? 1 : 0;
-            this.itemsManager.set("food", new Food({
+            this.blocksManager.set("food", new Food({
                 x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
                 y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
             }, this));
-            this.itemsManager.get("food")?.display();
+            this.blocksManager.get("food")?.display();
             this.generateRandomWall();
-            this.itemsManager.set("bomb", null);
+            this.blocksManager.set("bomb", null);
 
             this.score = 0;
             this.speed = 150;
@@ -371,6 +376,10 @@ export default class Game<P> extends Component<{}, GameState> {
                 });
             }, 30 * 1000);
             this.timersManager.set("runningCooldown", {timer: cdTimer, type: "timeout"});
+        });
+        document.body.addEventListener("itemUse", (e: CustomEvent) => {
+            var item: Item = e.detail.item;
+            item.onUse(this);
         });
     }
 }

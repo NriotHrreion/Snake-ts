@@ -3,6 +3,8 @@
 import { Component, ReactElement, Fragment } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Shop from "shop/Shop";
+import Item from "items/Item";
 import Updater from "Updater";
 import Utils from "utils";
 // Layout Style
@@ -14,9 +16,12 @@ import HomePage from "pages/HomePage";
 import Board from "components/Board";
 import Game from "components/Game";
 import MessageBox from "components/MessageBox";
-import Docs from "pages/Docs";
 import Settings from "pages/Settings";
+import ShopPage from "shop/ShopPage";
+import Docs from "pages/Docs";
 import About from "pages/About";
+import CommodityDetails from "shop/components/CommodityDetails";
+import InventorySlot from "components/InventorySlot";
 
 import favicon from "style/textures/icon_snake.png";
 
@@ -34,6 +39,8 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
 
     // only for colorful skin player, isn't the common skin
     private currentSkin: string = "hsl(359,100%,50%)";
+
+    private currentSelectedSlotId: number = 0;
     
     public constructor(props: P) {
         super(props);
@@ -63,6 +70,13 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
         });
     }
 
+    private getCurrentItem(): Item | null {
+        var slotId = this.currentSelectedSlotId;
+        var shopObj = Shop.get();
+
+        return shopObj.getItem(shopObj.getInventory().itemSlots[slotId].itemId);
+    }
+
     public render(): ReactElement {
         return (
             <HashRouter>
@@ -85,11 +99,38 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                                 <Button className="bottom-button" onClick={() => window.location.href = "./index.html"}>Quit</Button>
                                 <Button className="bottom-button" onClick={() => this.startHandle()}>Start</Button>
                             </div>
+                            <div className="inventory-container">
+                                <div className="armor-slots">
+                                    <h4>Armor Slots</h4>
+                                    <div className="slots">
+                                        {
+                                            /** @todo */
+                                            Shop.get().getInventory().armorSlots.map((s, index) => {
+                                                return <InventorySlot key={index} index={index} slot={s} type="armorSlots"/>;
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                                <div className="item-slots">
+                                    <h4>Item Slots</h4>
+                                    <div className="slots">
+                                        {
+                                            Shop.get().getInventory().itemSlots.map((s, index) => {
+                                                return <InventorySlot key={index} index={index} slot={s} type="itemSlots"/>;
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                         </Fragment>
                     }></Route>
                     <Route path="/settings" element={<Settings/>}></Route>
+                    <Route path="/shop" element={<ShopPage/>}></Route>
                     <Route path="/docs" element={<Docs/>}></Route>
                     <Route path="/about" element={<About/>}></Route>
+
+                    {/* Shop Router */}
+                    <Route path="/shop/:id" element={<CommodityDetails/>}></Route>
                 </Routes>
             </HashRouter>
         );
@@ -145,11 +186,42 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                     });
                     document.body.dispatchEvent(gameResetEvent);
                     break;
+                case "u":
+                    var currentItem = this.getCurrentItem();
+                    if(currentItem) { // pass the event to the Game object
+                        var itemUseEvent = new CustomEvent("itemUse", {
+                            detail: {
+                                item: currentItem
+                            }
+                        });
+                        document.body.dispatchEvent(itemUseEvent);
+                    }
+                    break;
             }
         });
         document.body.addEventListener("settingsChange", (e: CustomEvent) => {
             if(e.detail.type == "colorfulSkin" || e.detail.type == "generateWall") {
                 window.location.reload();
+            }
+        });
+
+        // Slot Select
+        const borderColor = "#517aa1";
+        Utils.getElem("slot-itemSlots-0").style.borderColor = borderColor;
+        document.body.addEventListener("slotSelect", (e: CustomEvent) => {
+            var slotId: number = e.detail.slotId;
+            var slotType: "armorSlots" | "itemSlots" = e.detail.slotType;
+            var slotAmount = Shop.get().getInventory()[slotType].length;
+
+            this.currentSelectedSlotId = slotId;
+
+            for(let i = 0; i < slotAmount; i++) {
+                var elem = Utils.getElem("slot-"+ slotType +"-"+ i);
+                if(i != slotId) {
+                    elem.style.borderColor = "#fff";
+                } else {
+                    elem.style.borderColor = borderColor;
+                }
             }
         });
 
