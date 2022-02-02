@@ -28,7 +28,7 @@ export default class Settings<P> extends Component<{}, SettingsState> {
         return (
             <div className="dialog-page" id="settings">
                 <h2>Settings</h2>
-                <a href="/index.html">&lt; Back</a>
+                <a href="./index.html">&lt; Back</a>
 
                 <div className="contents">
                     <p>Colorful Skin <code>(refresh)</code> <Switcher default={settings.colorfulSkin} storeKey="colorfulSkin"/></p>

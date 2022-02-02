@@ -17,7 +17,7 @@ export default class ShopPage<P> extends Component<{}, ShopPageState> {
         return (
             <div className="shop-container">
                 <h2>Shop <span id="wallet">{"Your Wallet: "+ this.state.wallet +"$"}</span></h2>
-                <a href="/index.html">&lt; Back</a>
+                <a href="./index.html">&lt; Back</a>
 
                 <div className="list">
                     {

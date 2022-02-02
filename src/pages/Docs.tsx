@@ -6,7 +6,7 @@ export default class Docs extends Component {
         return (
             <div className="dialog-page" id="docs">
                 <h2>How To Play</h2>
-                <a href="/index.html">&lt; Back</a>
+                <a href="./index.html">&lt; Back</a>
 
                 <div className="contents">
                     <p><em>By NriotHrreion</em></p>

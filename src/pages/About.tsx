@@ -36,7 +36,7 @@ export default class About<P> extends Component<AboutProps, {}> {
         return (
             <div className="dialog-page" id="about">
                 <h2 onClick={() => this.easterHandle()} onTouchCancel={() => this.easterHandle()}>About</h2>
-                <a href="/index.html">&lt; Back</a>
+                <a href="./index.html">&lt; Back</a>
 
                 <div className="contents">
                     <p>This is a Snake Game, and it's written in <b>React + TypeScript</b></p>
