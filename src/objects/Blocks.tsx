@@ -4,7 +4,7 @@ import _Bomb from "./Bomb";
 import _Candy from "./Candy";
 import _Snickers from "./Snickers";
 
-export namespace Blocks {
+export declare namespace Blocks {
     export class Food extends _Food {}
     export class FoodPackage extends _FoodPackage {}
     export class Bomb extends _Bomb {}
