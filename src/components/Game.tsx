@@ -7,9 +7,8 @@ import { Dir } from "./Dir";
 import SnakeGame from "../Main";
 import { tipMessageRunning } from "../Main";
 import Block from "../objects/Block";
-import { Blocks } from "../objects/Blocks";
-import Snake from "../objects/Snake";
 import Food from "../objects/Food";
+import Snake from "../objects/Snake";
 import Ghost from "../entities/Ghost";
 import GhostGray from "../entities/GhostGray";
 import Utils from "../utils";
@@ -59,7 +58,7 @@ export default class Game<P> extends Component<{}, GameState> {
 
         this.snake = new Snake(3, this);
         var foodBorder = this.generateWall ? 1 : 0;
-        this.blocksManager.set("food", new Blocks.Food({
+        this.blocksManager.set("food", new Food({
             x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
             y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
         }, this));

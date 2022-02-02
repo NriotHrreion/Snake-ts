@@ -1,7 +1,11 @@
 /* eslint-disable eqeqeq */
 import { Dir } from "../components/Dir";
 import Game from "../components/Game";
-import { Blocks } from "../objects/Blocks";
+import Food from "./Food";
+import FoodPackage from "./FoodPackage";
+import Bomb from "./Bomb";
+import Candy from "./Candy";
+import Snickers from "./Snickers";
 import Ghost from "../entities/Ghost";
 import GhostGray from "../entities/GhostGray";
 import Utils from "../utils";
@@ -200,7 +204,7 @@ export default class Snake {
             var foodBorder = this.game.generateWall ? 1 : 0;
 
             // do spawn food (100%)
-            this.game.blocksManager.set("food", new Blocks.Food({
+            this.game.blocksManager.set("food", new Food({
                 x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
                 y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
             }, this.game));
@@ -208,7 +212,7 @@ export default class Snake {
 
             // do spawn food package (5%)
             if(Utils.getRandom(0, 19) == 0) {
-                this.game.blocksManager.set("food-package", new Blocks.FoodPackage({
+                this.game.blocksManager.set("food-package", new FoodPackage({
                     x: Utils.getRandom(0 + foodBorder, 79 - foodBorder),
                     y: Utils.getRandom(0 + foodBorder, 49 - foodBorder)
                 }, this.game));
@@ -217,7 +221,7 @@ export default class Snake {
 
             // do spawn bomb (50%)
             if(Utils.getRandom(0, 1) == 0) {
-                this.game.blocksManager.set("bomb", new Blocks.Bomb({
+                this.game.blocksManager.set("bomb", new Bomb({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));
@@ -226,7 +230,7 @@ export default class Snake {
 
             // do spawn candy (33%)
             if(Utils.getRandom(0, 2) == 0) {
-                this.game.blocksManager.set("candy", new Blocks.Candy({
+                this.game.blocksManager.set("candy", new Candy({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));
@@ -235,7 +239,7 @@ export default class Snake {
 
             // do spawn snickers (20%)
             if(Utils.getRandom(0, 4) == 0) {
-                this.game.blocksManager.set("snickers", new Blocks.Snickers({
+                this.game.blocksManager.set("snickers", new Snickers({
                     x: Utils.getRandom(0, 79),
                     y: Utils.getRandom(0, 49)
                 }, this.game));

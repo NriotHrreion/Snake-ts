@@ -3,8 +3,10 @@ import XXTEA from "xxtea-node";
 import commodities, { Commodity, CommodityType } from "./Commodities";
 import Inventory from "./Inventory";
 import Item from "../items/Item";
+import Gun from "../items/Gun";
+import Bullet from "../items/Bullet";
+import Disinfectant from "../items/Disinfectant";
 import Utils from "../utils";
-import { Items } from "../items/Items";
 
 const xxteaKey: Uint8Array = XXTEA.toBytes("a1b2c3d4ex");
 
@@ -98,11 +100,11 @@ export default class Shop {
                 var c = commodities[i];
                 switch(itemId) {
                     case 1:
-                        return new Items.Gun(c.itemId, c.itemIcon, c.stackable);
+                        return new Gun(c.itemId, c.itemIcon, c.stackable);
                     case 2:
-                        return new Items.Bullet(c.itemId, c.itemIcon, c.stackable);
+                        return new Bullet(c.itemId, c.itemIcon, c.stackable);
                     case 3:
-                        return new Items.Disinfectant(c.itemId, c.itemIcon, c.stackable);
+                        return new Disinfectant(c.itemId, c.itemIcon, c.stackable);
                 }
             }
         }
