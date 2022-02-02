@@ -112,7 +112,7 @@ export default class SnakeGame<P> extends Component<{}, MainState> {
                                     </div>
                                 </div>
                                 <div className="item-slots">
-                                    <h4>Item Slots</h4>
+                                    <h4>Item Slots <span style={{fontSize: "11pt", fontWeight: "400"}}>(press 'u' to use)</span></h4>
                                     <div className="slots">
                                         {
                                             Shop.get().getInventory().itemSlots.map((s, index) => {

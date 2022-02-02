@@ -31,6 +31,8 @@ export default class Docs extends Component {
 
                     <p>To earn money for your wallet, you can try your best to play the game. After 'game over' (the snake died), the score will change into money and come to your wallet.</p>
                     
+                    <p>To use the item you have, press <code>"u"</code>.</p>
+
                     <p>The game hasn't been completely supported for mobile. And I'll try my best to complete it. To contribute, see: <a href="https://github.com/NriotHrreion/Snake-ts/pulls" target="_blank" rel="noreferrer">The project pulls</a></p>
 
                     <p><b>Enjoy the game :)</b></p>
