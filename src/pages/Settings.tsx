@@ -12,9 +12,9 @@ export default class Settings<P> extends Component<{}, SettingsState> {
     private renderEasterOption(): ReactElement | null {
         var storage = window.localStorage;
         var settings = JSON.parse(storage.getItem("snake-ts.settings") as any) as GameSettings;
-        var easter = storage.getItem("snake-ts.easter") == "0" ? false : true;
+        var easter = storage.getItem("snake-ts.easter");
 
-        if(!easter) return null;
+        if(easter == null || easter == "0") return null;
 
         return (
             <p>{Utils.newGUID()} <Switcher default={settings.easter} storeKey="easter"/></p>

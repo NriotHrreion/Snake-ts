@@ -12,16 +12,11 @@ const xxteaKey: Uint8Array = XXTEA.toBytes("a1b2c3d4ex");
 
 export default class Shop {
     private static instance: Shop | null = null;
-
-    public wallet: number = 0;
-
-    private Shop() {
-        
-    }
-
+    
     public static get(): Shop {
         if(Shop.instance == null) {
             Shop.instance = new Shop();
+            console.log("Wallet: %d$", Shop.instance.getWallet(), "\nInventory: ", Shop.instance.getInventory());
         }
         return Shop.instance;
     }

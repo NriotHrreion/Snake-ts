@@ -38,7 +38,7 @@ export default class Game<P> extends Component<{}, GameState> {
     private timersManager: Map<string, Timer> = new Map<string, Timer>();
 
     public timerMove: any;
-    private maxSpeed: number = 300;
+    private readonly maxSpeed: number = 300;
     
     public constructor(props: P) {
         super(props);
