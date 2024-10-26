@@ -1,10 +1,10 @@
 # Snake Game in Typescript
 
-By NriotHrreion; Using [React.js](https://reactjs.org)
+By NriotHrreion; Using [React.js](https://react.dev)
 
 ## 使用方法
 
-在线游玩: [戳我](http://snake-ts.nin.red)
+在线游玩: [戳我](http://snake.nocp.space)
 
 1. 下载这个项目
 
