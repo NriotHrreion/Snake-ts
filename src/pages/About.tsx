@@ -61,7 +61,7 @@ export default class About<P> extends Component<AboutProps, {}> {
                 <div className="contents">
                     <p>Source Code: <a href="https://github.com/NriotHrreion/Snake-ts" target="_blank" rel="noreferrer">Click Me</a></p>
 
-                    <p>Play Online: <a href="https://snake-ts.nin.red" target="_blank" rel="noreferrer">Click Me</a></p>
+                    <p>Play Online: <a href="https://snake.nocp.space" target="_blank" rel="noreferrer">Click Me</a></p>
 
                     <p>My Github Homepage: <a href="https://github.com/NriotHrreion" target="_blank" rel="noreferrer">Click Me</a></p>
 
